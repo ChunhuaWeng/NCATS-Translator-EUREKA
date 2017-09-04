@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class Question {
+
     String question;
     String template;
     List<String> entityList = new ArrayList<>(  );
