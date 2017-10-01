@@ -71,6 +71,17 @@ public class OhdsiController {
 		
 		return "cohort";
 	}
+	
+	@RequestMapping("/sites")
+	public String showsites() {
+		//
+		return "sites";
+	}
+	@RequestMapping("/results")
+	public String showresults() {
+		//
+		return "results";
+	}
 
 
 	@RequestMapping("/ft2query")

@@ -126,84 +126,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- /.container --> </nav>
 	<div class="container projects">
 		<div class="page-header projects-header " style="margin-top: 100px">
-			<h4>Cohort Definition</h4>
+			<h4>Test Results</h4>
 		</div>
 		<div class="panel panel-default">
   <!-- Default panel contents -->
   
 
-  <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Patient Group</th>
-            <th>Description</th>
-            <th>SQL file</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Case Control</td>
-            <td>Otto</td>
-            <td><button id="gobtn" type="button" class="btn btn-default">download file</button></td>
-          </tr>
-          <tr>
-           <th scope="row">2</th>
-            <td>Control Control</td>
-            <td>Otto</td>
-            <td><button id="gobtn" type="button" class="btn btn-default">download file</button></td>
-          </tr>
-        </tbody>
-      </table>
+ 
 </div>
-		<!-- <div class="col-sm-6 col-md-6 col-lg-6">
-			<label>Case Group</label>
-			<textarea class="form-control" rows="12" id="incriteria" name="incriteria"></textarea>
-			<button id="gobtn" type="button" class="btn btn-default">download file</button>
-			
-		</div>	
-
-		<div class="col-sm-6 col-md-6 col-lg-6">
-			<label>Control Group</label>
-			
-			<textarea class="form-control" rows="12" id="excriteria" name="excriteria"></textarea>
-			<button id="gobtn" type="button" class="btn btn-default">download file</button>
-			
-		</div>
-		<div class="col-sm-6 col-md-6 col-lg-6">
-		</div>
-		 -->
-	</div>
-	<div class="container projects">
-		<div class="page-header projects-header ">
-			<h4>Test Method</h4>
-		</div>
-		<form role="form">
-		<div class="form-group">
-		<label class="col-sm-2">Choose a test method</label>
-		<div class="col-sm-6">
-	    <select class="form-control"> 
-	      <option>Chi-Square Test</option> 
-	      <option>2</option> 
-	      <option>3</option> 
-	      <option>4</option> 
-	      <option>5</option> 
-	      </select>
-	      <p>
-	      A chi-square test is any statistical hypothesis test wherein the sampling distribution of the test statistic is a chi-squared distribution when the null hypothesis is true. Without other qualification, 'chi-squared test' often is used as short for Pearson's chi-squared test.</p>
-	       <button id="gobtn" type="button" class="btn btn-default">upload your own script</button>
-	  </div>
-	  
-        </div>
-        </form>
-       
+		
 	</div>
 	
+	
 	<div class="container projects">
-		<div class="page-header projects-header ">
-		</div>
-		 <button id="gobtn" type="button" class="btn btn-default">Continue</button>
+		
+		 <button id="gobtn" type="button" class="btn btn-default">Execute Test</button>
 		</div>
 	<footer>
 	<div class="container">
