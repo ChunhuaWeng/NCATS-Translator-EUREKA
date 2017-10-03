@@ -1,4 +1,4 @@
-package com.company;
+package edu.columbia.dbmi.ohdsi;
 import java.io.*;
 
 public class Writer {

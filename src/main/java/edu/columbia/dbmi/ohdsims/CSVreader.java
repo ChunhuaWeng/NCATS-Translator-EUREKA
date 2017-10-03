@@ -1,4 +1,4 @@
-package com.company;
+package edu.columbia.dbmi.ohdsi;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,13 +14,13 @@ public class CSVreader {
             while ((line = br.readLine()) != null) {
                 String[] cont = line.split(cvsSplitBy);
                 String term = cont[1].toLowerCase();
-                String domain = cont[2].toLowerCase();
+                String conceptID = cont[0];//.toLowerCase();
                 if (rec.get( term )==null) {
-                    rec.put(term, new ArrayList<String>(Arrays.asList( domain )));
+                    rec.put(term, new ArrayList<String>(Arrays.asList( conceptID )));
                 } else {
                     List<String> currList = rec.get(term);
-                    if (!currList.contains( domain )){
-                        rec.get( term ).add(domain);
+                    if (!currList.contains( conceptID )){
+                        rec.get( term ).add(conceptID);
                     }
                 }
             }
