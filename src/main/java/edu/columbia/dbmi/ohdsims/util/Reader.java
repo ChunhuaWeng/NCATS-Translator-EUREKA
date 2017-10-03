@@ -1,4 +1,4 @@
-package edu.columbia.dbmi.ohdsims.util;
+package edu.columbia.dbmi.ohdsi;
 import java.io.*;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +30,7 @@ public class Reader {
             int[] idx = Arrays.stream(rawIdx.split(",")).mapToInt(Integer::parseInt).toArray();
             cont.add(idx);
 
+            // add temp info
             String rawTempIdx = val[2].substring(1, val[2].length() - 1);
             if (StringUtils.isEmpty(rawTempIdx)==false){
                 String[] tempIdx = rawTempIdx.split(",");
@@ -53,6 +54,22 @@ public class Reader {
             } else {
                 cont.add(null);
                 cont.add(null);
+            }
+
+            //add analysis method
+            String rawAlsMtd = val[4].substring(1, val[4].length() - 1);
+            List<Object> method = new ArrayList<>();
+            String[] alsMtd = rawAlsMtd.split(",");
+            String mtd = alsMtd[0];
+            if (mtd.equals("ratio")) { // use the ratio method
+                method.add(mtd);
+                method.add(Integer.parseInt(alsMtd[1]));
+                method.add(Integer.parseInt(alsMtd[2]));
+                cont.add(method);
+            } else {
+                // more methods here
+                method.add(null);
+                cont.add(method);
             }
 //            System.out.println(cont.toString());
             tempTab.put(ini, cont);

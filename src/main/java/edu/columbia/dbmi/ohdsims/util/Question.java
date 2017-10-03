@@ -1,4 +1,4 @@
-package edu.columbia.dbmi.ohdsims.util;
+package edu.columbia.dbmi.ohdsi;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -10,6 +10,7 @@ public class Question {
     String template;
     List<String> entityList = new ArrayList<>();
     List<String> tempList = new ArrayList<>();
+    List<String> methodList = new ArrayList<>();
     Hashtable<String, String> tempTab;
     LinkedHashMap<String, List> newTempTab;
 //    List<HashMap<String, ArrayList<String>>> keywordList = new ArrayList<>();
@@ -43,6 +44,8 @@ public class Question {
 //                    System.out.println("temp unit "+value.get(3));
 //                    System.out.println("temp rel prior "+value.get(4));
 //                    System.out.println("temp rel post "+value.get(5));
+//                    System.out.println("method "+value.get(6));
+//
 //                }
 //        );
 //        System.out.println("==========");
@@ -88,6 +91,14 @@ public class Question {
                         this.entityList.add(mat.group(idx[i]));
                     }
                 }
+                //analysis method info here
+                ArrayList<Object> obj= (ArrayList<Object>) val.get(6);
+                Integer num = (Integer)obj.get(1);
+                Integer den = (Integer)obj.get(2);
+//                List<String> method = new ArrayList<>();
+                this.methodList.add((String)obj.get(0));
+                this.methodList.add(mat.group(num));
+                this.methodList.add(mat.group(den));
             }
         }
 //        System.out.println("entityList: "+this.entityList.toString());
@@ -108,6 +119,7 @@ public class Question {
             this.keyConcepts.put(entity, termConceptIDDict.get(entity));
         }
         this.keyConcepts.put("tempRel", this.tempList);
+        this.keyConcepts.put("analysisMethod", this.methodList);
     }
 }
 
