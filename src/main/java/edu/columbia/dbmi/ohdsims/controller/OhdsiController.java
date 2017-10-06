@@ -47,7 +47,6 @@ public class OhdsiController {
 	@Autowired
 	private Properties applicationProps;
 
-
 	public Properties getApplicationProps() {
 		return applicationProps;
 	}
@@ -55,8 +54,6 @@ public class OhdsiController {
 	public void setApplicationProps(Properties applicationProps) {
 		this.applicationProps = applicationProps;
 	}
-
-	final static String WORD2VEC = "/Users/yuanchi/Downloads/GoogleNews-vectors-negative300.bin";
 
 	@RequestMapping("/main")
 	public String showmain() {
@@ -68,7 +65,6 @@ public class OhdsiController {
 	@RequestMapping("/cohort")
 	public String showcohort() {
 		//
-		
 		return "cohort";
 	}
 	
@@ -76,10 +72,8 @@ public class OhdsiController {
 	@ResponseBody
 	public String parseSentence(HttpSession httpSession, HttpServletRequest request, String sentence)
 			throws Exception {
-		System.out.println(sentence);
-		
+		System.out.println(sentence);	
 		return null;
-		
 	}
 	
 	@RequestMapping("/sites")
@@ -102,15 +96,9 @@ public class OhdsiController {
 		return "freetext2sql";
 	}
 
-	@RequestMapping("/addtable")
-	public String showaddtable() {
-		//
-		return "addtable";
-	}
 	
 	@RequestMapping("/reformulate")
 	public String reformulate() {
-		//
 		System.out.println("~~!!@#!@#~~");
 		try {
 			Thread.sleep(5000);
@@ -127,55 +115,13 @@ public class OhdsiController {
 		return "conceptSetPage";
 	}
 
-	@RequestMapping("/word2vecbib")
-	public String showword2vecbib() {
-		//
-		return "word2vecbib";
-	}
-
-	@RequestMapping("/eliresult")
-	public String showeliresult() {
-		//
-		return "eliieresult";
-	}
 
 	@RequestMapping("/welcome")
 	public String showwelcome() {
 		//
 		return "welcome";
 	}
-	
-	@RequestMapping("/format")
-	@ResponseBody
-	public String formatFreetext(HttpSession httpSession, HttpServletRequest request, String freetextinput)
-			throws Exception {
-		// String resultString = null;
 
-		String criteria = freetextinput;
-		criteria = criteria.replaceAll("\\s+", " ");
-		// System.out.println(criteria);
-		// Using stanfordNLP to do sentence segment
-		// Properties properties = new Properties();
-		// properties.setProperty("annotators", "tokenize, ssplit, parse");
-		// StanfordCoreNLP pipeline = new StanfordCoreNLP(properties);
-		// List<CoreMap> sentences =
-		// pipeline.process(criteria).get(CoreAnnotations.SentencesAnnotation.class);
-		// StringBuffer sb = new StringBuffer();
-		// for (CoreMap sentence : sentences) {
-		// sb.append(sentence.toString());
-		// sb.append("\n");
-		// // System.out.println(sentence.toString());
-		// }
-		// return sb.toString();
-		return "";
-	}
-
-	@RequestMapping("/execeli")
-	@ResponseBody
-	public String executeEliIE(HttpSession httpSession, HttpServletRequest request, String freetextinput)
-			throws Exception {
-		return "1";
-	}
 	
 	@RequestMapping("/generateSQL")
 	@ResponseBody
@@ -203,22 +149,6 @@ public class OhdsiController {
 		jcs.accumulate("CensoringCriteria", janull);
 		System.out.println(jcs);
 		httpSession.setAttribute("jsonresult", jcs.toString());
-		return jcs.toString();
-	}
-
-	@RequestMapping("/getjson")
-	public String getJSON(HttpSession httpSession, HttpServletRequest request, String freetextinput) throws Exception {
-		String[] args = new String[] { "-props", "NER.prop", "-train", "" };
-		// CRFClassifier.main(args);
-		return "getjson";
-	}
-	
-
-	@RequestMapping(value = "/sibling", method = {RequestMethod.POST})
-	@ResponseBody
-	public String getsiblingSet(@RequestBody List<Integer> siblingSet) throws Exception {
-		System.out.println(siblingSet);
-		JSONObject jcs = new JSONObject();
 		return jcs.toString();
 	}
 
