@@ -1,4 +1,4 @@
-package edu.columbia.dbmi.ohdsi;
+package edu.columbia.dbmi.ohdsims.util;
 import java.io.*;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
