@@ -1,3 +1,0 @@
-what percent of:what percent of (.*) patients (have|use|take) (.*) after (.*) (day|days|week|weeks|month|months|year|years) of diagnosis\?##[1,3]##[4,5]##[1,3]
-what is:what is the prevalence of (.*) among (.*) patients\?##[1,2]##[]##[]
-can:(can|does|do)\s(.*)\s(treat|cure|improve|use)\s(.*)\?##[2,4]##[]##[]
