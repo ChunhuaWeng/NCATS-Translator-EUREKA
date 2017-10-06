@@ -72,6 +72,16 @@ public class OhdsiController {
 		return "cohort";
 	}
 	
+	@RequestMapping("/parse")
+	@ResponseBody
+	public String parseSentence(HttpSession httpSession, HttpServletRequest request, String sentence)
+			throws Exception {
+		System.out.println(sentence);
+		
+		return null;
+		
+	}
+	
 	@RequestMapping("/sites")
 	public String showsites() {
 		//
