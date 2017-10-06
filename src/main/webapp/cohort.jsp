@@ -145,13 +145,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <tr>
             <th scope="row">1</th>
             <td>Case Control</td>
-            <td>Otto</td>
+            <td>Patient with Disease A</td>
             <td><button id="gobtn" type="button" class="btn btn-default">download file</button></td>
           </tr>
           <tr>
            <th scope="row">2</th>
             <td>Control Control</td>
-            <td>Otto</td>
+            <td>Patient with Disease A and Drug B</td>
             <td><button id="gobtn" type="button" class="btn btn-default">download file</button></td>
           </tr>
         </tbody>
@@ -184,8 +184,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<label class="col-sm-2">Choose a test method</label>
 		<div class="col-sm-6">
 	    <select class="form-control"> 
-	      <option>Chi-Square Test</option> 
-	      <option>2</option> 
+	      <option>Chi-Square Test</option>
+	       <option>Percentage</option> 
 	      <option>3</option> 
 	      <option>4</option> 
 	      <option>5</option> 
@@ -203,7 +203,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="container projects">
 		<div class="page-header projects-header ">
 		</div>
-		 <button id="gobtn" type="button" class="btn btn-default">Continue</button>
+		 <button id="gotosites" type="button" class="btn btn-default">Continue</button>
 		</div>
 	<footer>
 	<div class="container">
@@ -238,7 +238,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- Bootstrap Core JavaScript -->
 	<script src="<%=basePath%>js/bootstrap.min.js"></script>
 	<!-- Custom Theme JavaScript -->
-	<script src="<%=basePath%>js/grayscale.js"></script>
+	<%-- <script src="<%=basePath%>js/grayscale.js"></script> --%>
+	<script type="text/javascript">
+    var basePath = "<%=basePath%>";
+    $(function() {
+  	  $("#gotosites").click(function() {
+  		goButton();
+  		});
+    })
+    function goButton(){
+    	window.location.href=basePath + "ohdsi/sites";
+    }
+    </script>
 </body>
 
 

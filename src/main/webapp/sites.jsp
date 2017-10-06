@@ -145,39 +145,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <tbody>
           <tr>
             <th scope="row">1</th>
-            <td>Case Control</td>
-            <td>Otto</td>
-            <td>Otto</td>
-            <td><button id="gobtn" type="button" class="btn btn-default">Assign</button></td>
+            <td>SynPuf 1%</td>
+            <td>CMS 2008-2010 Data Entrepreneurs’ Synthetic Public Use File</td>
+            <td>23,000</td>
+            <td><input type="checkbox"></td>
           </tr>
           <tr>
            <th scope="row">2</th>
-            <td>Control Control</td>
-            <td>Otto</td>
-            <td>Otto</td>
-            <td><button id="gobtn" type="button" class="btn btn-default">Assign</button></td>
+            <td>SynPuf 1k</td>
+            <td>CMS 2008-2010 Data Entrepreneurs’ Synthetic Public Use File</td>
+            <td>1,000</td>
+            <td><input type="checkbox"></td>
           </tr>
            <tr>
            <th scope="row">2</th>
-            <td>Control Control</td>
-            <td>Otto</td>
-            <td>Otto</td>
-             <td><button id="gobtn" type="button" class="btn btn-default">Assign</button></td>
+            <td>OHDSI West Pending</td>
+            <td>NYP & Columbia University Medical Center</td>
+            <td>200,0000</td>
+            <td><input type="checkbox"></td>
           </tr>
-           <tr>
            <th scope="row">2</th>
-            <td>Control Control</td>
-            <td>Otto</td>
-            <td>Otto</td>
-             <td><button id="gobtn" type="button" class="btn btn-default">Assign</button></td>
+            <td>OHDSI East Pending</td>
+            <td>Cornell Medical Center</td>
+            <td>200,0000</td>
+            <td><input type="checkbox"></td>
           </tr>
-           <tr>
-           <th scope="row">2</th>
-            <td>Control Control</td>
-            <td>Otto</td>
-            <td>Otto</td>
-            <td><button id="gobtn" type="button" class="btn btn-default">Assign</button></td>
-          </tr>
+          
         </tbody>
       </table>
 </div>
@@ -187,7 +180,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<div class="container projects">
 		
-		 <button id="gobtn" type="button" class="btn btn-default">Execute Test</button>
+		 <button id="execute" type="button" class="btn btn-default">Execute Test</button>
 		</div>
 	<footer>
 	<div class="container">
@@ -222,7 +215,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- Bootstrap Core JavaScript -->
 	<script src="<%=basePath%>js/bootstrap.min.js"></script>
 	<!-- Custom Theme JavaScript -->
-	<script src="<%=basePath%>js/grayscale.js"></script>
+	
+	<script type="text/javascript">
+    var basePath = "<%=basePath%>";
+    $(function() {
+  	  $("#execute").click(function() {
+  		goButton();
+  		});
+    })
+    function goButton(){
+    	window.location.href=basePath + "ohdsi/results";
+    }
+    </script>
 </body>
 
 

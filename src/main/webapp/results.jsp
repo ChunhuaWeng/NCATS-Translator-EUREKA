@@ -128,19 +128,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="page-header projects-header " style="margin-top: 100px">
 			<h4>Test Results</h4>
 		</div>
-		<div class="panel panel-default">
-  <!-- Default panel contents -->
+		<!-- <div class="panel panel-default">
+  Default panel contents
   
 
  
-</div>
+</div> -->
 		
 	</div>
 	
 	
 	<div class="container projects">
 		
-		 <button id="gobtn" type="button" class="btn btn-default">Execute Test</button>
+		 <!-- <button id="gobtn" type="button" class="btn btn-default">Execute Test</button> -->
 		</div>
 	<footer>
 	<div class="container">
