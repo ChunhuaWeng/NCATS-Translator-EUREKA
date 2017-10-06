@@ -104,7 +104,7 @@ opacity:.7;
                         <hr class="intro-divider">
                         <div class="col-lg-6 col-lg-offset-3">
                         <div class="input-group input-group-lg">
-        				<input type="text" placeholder="Search" class="form-control inputField" id="myinput">
+        				<input type="text" placeholder="Search" class="form-control inputField" id="sentence">
         				<span class="input-group-btn">
         				<button id="gobtn" type="button" class="btn btn-primary">GO</button>
         				</span>
@@ -309,8 +309,25 @@ opacity:.7;
   		});
     })
     function goButton(){
-    	window.location.href=basePath + "ohdsi/cohort";
+    	var sentence = $("#sentence").val();
+		$.ajax({
+			type : 'POST',
+			url : basePath + "ohdsi/parse",
+			data : {
+				'sentence' : sentence
+			},
+			dataType : "json",
+			success : function(data) {
+				alert("Success!"); 
+			},
+			error : function() {
+				//alert("Please check your NCTID");
+			}
+
+		});
+    	//window.location.href=basePath + "ohdsi/cohort";
     }
+    
     </script>
 </body>
 </html>
