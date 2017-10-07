@@ -106,8 +106,10 @@ opacity:.7;
                         <div class="input-group input-group-lg">
         				<input type="text" placeholder="Search" class="form-control inputField" id="sentence">
         				<span class="input-group-btn">
-        				<button id="gobtn" type="button" class="btn btn-primary">GO</button>
+        				<button id="gobtn" type="button" class="btn btn-primary">Go</button>
+        				<button id="gobtn" type="button" class="btn btn-success">Example</button>
         				</span>
+        				
     					</div>
      					</div>
                         <!-- <ul class="list-inline intro-social-buttons">
