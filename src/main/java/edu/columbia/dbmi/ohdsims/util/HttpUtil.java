@@ -16,14 +16,14 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class HttpUtil {
-	public static String doPost(String url, JSONObject jjj) {
+	public static String doPost(String url, String content) {
 		try {
 			HttpPost httppost = new HttpPost(url);
 			httppost.setHeader("Content-Type", "application/json");
-			StringEntity se = new StringEntity(jjj.toString());
+			StringEntity se = new StringEntity(content);
 			httppost.setEntity(se);
 			HttpResponse httpresponse = new DefaultHttpClient().execute(httppost);
-
+			System.out.println(httpresponse.getStatusLine().getStatusCode());
 			if (httpresponse.getStatusLine().getStatusCode() == 200) {
 				String strResult = EntityUtils.toString(httpresponse.getEntity());
 				return strResult;
@@ -72,4 +72,27 @@ public class HttpUtil {
 
 		}
 	}
+	//
+	
+//	public static void doPost(String urlstr,String json) {
+//		try {
+//	        URL url = new URL(urlstr);
+//	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//	        connection.setRequestMethod("POST");
+//	        connection.setDoOutput(true);
+//	        connection.setRequestProperty("Content-Type", "application/json");
+//	        connection.setRequestProperty("Accept", "application/json");
+//	        OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
+//	        osw.write(json);
+//	        osw.flush();
+//	        osw.close();
+//	        System.err.println(connection.getResponseCode());
+//	        System.out.println(connection.getContent());
+//		} catch (Exception ex) {
+//			System.out.println(ex.getMessage());
+//
+//		}
+//	}
+	
+	
 }

@@ -9,7 +9,7 @@ public class Main {
         question.getQuestion();
         question.getTemplates();
         question.analyzeQuestion();
-        question.getResults();
+        question.getResults();  
 
         System.out.println("主要概念 "+question.outcome.majorConceptIDs.toString());
         System.out.println("时间 "+question.outcome.timeRels.timeVal);

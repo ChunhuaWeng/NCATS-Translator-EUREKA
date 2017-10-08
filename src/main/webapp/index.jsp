@@ -102,7 +102,7 @@ opacity:.7;
                         <h1>EUREKA</h1>
                         <!-- <h3>....</h3> -->
                         <hr class="intro-divider">
-                        <div class="col-lg-6 col-lg-offset-3">
+                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3">
                         <div class="input-group input-group-lg">
         				<input type="text" placeholder="Search" class="form-control inputField" id="sentence">
         				<span class="input-group-btn">

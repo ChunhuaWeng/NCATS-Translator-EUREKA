@@ -27,7 +27,7 @@ public class Question {
 
     //load templates
     public void getTemplates() throws IOException {
-        String tempPath = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/eureka_local/src/edu/columbia/dbmi/ohdsi/raw_templates.txt";
+        String tempPath = "/Users/cy2465/Downloads/raw_templates.txt";
         Reader reader = new Reader();
         reader.read(tempPath);
 //        this.tempTab = reader.split();
@@ -108,7 +108,7 @@ public class Question {
     //get associated conceptID
     public void getConceptID() {
         // load concept-domain dict file
-        String csvFile = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/eureka_local/src/edu/columbia/dbmi/ohdsi/CONCEPT.csv";
+        String csvFile = "/Users/cy2465/Downloads/CONCEPT.csv";
         CSVreader csvreader = new CSVreader();
         HashMap<String, ArrayList<String>> termConceptIDDict = csvreader.csv2dict(csvFile);
 
