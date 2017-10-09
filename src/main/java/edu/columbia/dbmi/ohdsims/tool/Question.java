@@ -1,25 +1,29 @@
 package edu.columbia.dbmi.ohdsims.tool;
-import java.io.*;
-import java.util.*;
-import java.util.regex.Pattern;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Question {
 
     String question;
-    String template;
-    List<String> entityList = new ArrayList<>();
-    List<String> tempList = new ArrayList<>();
-    List<String> methodList = new ArrayList<>();
-    Hashtable<String, String> tempTab;
-    LinkedHashMap<String, List> newTempTab;
-//    List<HashMap<String, ArrayList<String>>> keywordList = new ArrayList<>();
-//    List<HashMap<String, ArrayList<String>>> keyConcepts = new ArrayList<>();
-    LinkedHashMap<String, List<String>> keyConcepts = new LinkedHashMap<>();
-    List<Object> results = new ArrayList<>();
-    Outcome outcome = new Outcome();
-
-    //load a question
+	List<Template> newTempTab;
+	List<String> majorTerms = new ArrayList<>();
+	String timeVal;
+	String timeUnit;
+	String timeRel;
+	String priorEvt;
+	String postEvt;
+	List<String> numeratorList = new ArrayList<>();
+	List<String> denominatorList = new ArrayList<>();
+	List<Term> numTermList = new ArrayList<Term>();
+	List<Term> denTermList = new ArrayList<Term>();
+	
+	//get a question
     public void getQuestion() {
         System.out.println("Enter a question:\n");
         Scanner scan = new Scanner( System.in );
@@ -28,111 +32,106 @@ public class Question {
 
     //load templates
     public void getTemplates() throws IOException {
-        String tempPath = "/Users/cy2465/Downloads/raw_templates.txt";
+        String tempPath = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/eureka/src/main/java/edu/columbia/dbmi/ohdsims/tool/raw_templates.txt";
         Reader reader = new Reader();
         reader.read(tempPath);
-//        this.tempTab = reader.split();
-        this.newTempTab = reader.newSplit();
-//        this.newTempTab.forEach((String key, List value) -> {
-//                    System.out.println(key);
-//                    System.out.println("template: "+value.get(0));
-//                    System.out.println("key concept ids");
-//                    int[] idx = (int[]) value.get(1);
-//                    for (int i=0; i<idx.length; i++) {
-//                        System.out.println(idx[i]);
-//                    }
-//                    System.out.println("temp info "+value.get(2));
-//                    System.out.println("temp unit "+value.get(3));
-//                    System.out.println("temp rel prior "+value.get(4));
-//                    System.out.println("temp rel post "+value.get(5));
-//                    System.out.println("method "+value.get(6));
-//
-//                }
-//        );
-//        System.out.println("==========");
+        this.newTempTab = reader.parseTemplate();
     }
 
-    //analyze the question, return keywords and the associated domains
+    //apply templates to the question, return keywords and the associated attributes
     public void analyzeQuestion() {
-
-        for (String key:this.newTempTab.keySet()) {
-            List<Object> val = this.newTempTab.get(key);
-            String rawPat = (String) val.get(0);
-//            System.out.println("raw pat: "+rawPat);
-            Pattern pat = Pattern.compile(rawPat);
-
-            int[] idx = (int[]) val.get(1);
-//            for (int i=0; i<idx.length;i++) {
-//                System.out.println(idx[i]);
-//            }
-
-            Integer tempValIdx = (Integer) val.get(2);
-            Integer tempUnitIdx = (Integer) val.get(3);
-            Integer priorEventIdx = (Integer) val.get(4);
-            Integer postEventIdx = (Integer) val.get(5);
+        for (Template val:this.newTempTab) {
+        		String rawPat = val.getTemplate();
+        		Pattern pat = Pattern.compile(rawPat);
+//        		System.out.println("raw template: "+rawPat);        		
+            
+            int[] majorConceptIdx = val.getMajorConceptIdx();
+            Integer timeValIdx = val.timeValIdx;
+        		Integer timeUnitIdx = val.timeUnitIdx;
+        		Integer timeRelIdx = val.timeRelIdx;
+//        		System.out.println("ck1: "+timeRelIdx);
+        		Integer priorEvtIdx = val.priorEvtIdx;
+        		Integer postEvtIdx = val.postEvtIdx;
 
             Matcher mat = pat.matcher( this.question );
             if (mat.matches()==true) {
-                if (tempValIdx!=null&&tempUnitIdx!=null&&priorEventIdx!=null&&postEventIdx!=null) {
-                    for (int i=0;i<idx.length;i++){ //idx={1,3,4,5,1,3}, tempValIdx=4
-                        if (i<tempValIdx){
-                            this.entityList.add(mat.group(idx[i]));
-                        }
+                if (timeRelIdx!=null&&timeValIdx!=null&&timeUnitIdx!=null&&priorEvtIdx!=null&&postEvtIdx!=null) {
+//                		Term majorTerm = new Term();
+                    for (int i=0;i<majorConceptIdx.length;i++){ //idx={1,3,4,5,1,3}, tempValIdx=4
+                    		// add major terms
+                    		this.majorTerms.add(mat.group(majorConceptIdx[i]));
+//                    		if (i<timeValIdx){
+////                    			majorTerm.setTerm(mat.group(majorConceptIdx[i]));
+//                        }
                     }
-                    String tempVal = mat.group(tempValIdx);
-                    String tempUnit = mat.group(tempUnitIdx);
-                    String priorEvent = mat.group(priorEventIdx);
-                    String postEvent = mat.group(postEventIdx);
-                    this.tempList.add(tempVal);
-                    this.tempList.add(tempUnit);
-                    this.tempList.add(priorEvent);
-                    this.tempList.add(postEvent);
+                    this.timeRel = mat.group(timeRelIdx);
+                    this.timeVal = mat.group(timeValIdx);
+                    this.timeUnit = mat.group(timeUnitIdx);          
+                    this.priorEvt = mat.group(priorEvtIdx);
+                    this.postEvt = mat.group(postEvtIdx);
+
                 } else {
-                    for (int i=0;i<idx.length;i++){
-                        this.entityList.add(mat.group(idx[i]));
+                    for (int i=0;i<majorConceptIdx.length;i++){
+                    		this.majorTerms.add(mat.group(majorConceptIdx[i]));
                     }
                 }
                 //analysis method info here
-                ArrayList<Object> obj= (ArrayList<Object>) val.get(6);
-                Integer num = (Integer)obj.get(1);
-                Integer den = (Integer)obj.get(2);
-//                List<String> method = new ArrayList<>();
-                this.methodList.add((String)obj.get(0));
-                this.methodList.add(mat.group(num));
-                this.methodList.add(mat.group(den));
+                String methodName = val.method.methodName;
+                int[] numIdx = val.method.numeratorIdx;
+                int[] denIdx = val.method.denominatorIdx;
+                
+//                for (int i=0;i<denIdx.length;i++) {
+//                		System.out.println("den idx: "+denIdx[i]);
+//                }
+                
+                for (int i=0; i<numIdx.length;i++) {
+                		this.numeratorList.add(mat.group(numIdx[i]));
+                }
+                for (int j=0; j<denIdx.length;j++ ) {
+                		this.denominatorList.add(mat.group(denIdx[j]));
+                }
             }
         }
-//        System.out.println("entityList: "+this.entityList.toString());
-//        System.out.println("tempList: "+this.tempList.toString());
     }
-
-    // output result
-    public void getResults() {
-        // load concept-domain dict file
-        String csvFile = "/Users/cy2465/Downloads/CONCEPT.csv";
-        CSVreader csvreader = new CSVreader();
-        HashMap<String, ArrayList<String>> termConceptIDDict = csvreader.csv2dict(csvFile);
-
-        this.outcome.setMajorConceptIDs(this.entityList, termConceptIDDict);
-        this.outcome.setTimeRels(this.tempList);
-        this.outcome.setMethods(this.methodList);
-
-    }
-
-    //get associated conceptID
-    public void getConceptID() {
-        // load concept-domain dict file
-        String csvFile = "/Users/cy2465/Downloads/CONCEPT.csv";
-        CSVreader csvreader = new CSVreader();
-        HashMap<String, ArrayList<String>> termConceptIDDict = csvreader.csv2dict(csvFile);
-
-        // find concept ID or the given term
-        for (String entity: this.entityList){
-//            System.out.println(entity);
-//            System.out.println(termConceptIDDict.get(entity));
-            this.keyConcepts.put(entity, termConceptIDDict.get(entity));
-        }
-        this.keyConcepts.put("tempRel", this.tempList);
-        this.keyConcepts.put("analysisMethod", this.methodList);
+    
+    public void formatResult() {
+		// load concept-domain dict file
+    		String csvFile = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/eureka/src/main/java/edu/columbia/dbmi/ohdsims/tool/CONCEPT.csv";
+    		CSVreader csvreader = new CSVreader();
+    		csvreader.csv2dict(csvFile);
+    		HashMap<String, ArrayList<String>> term2idDict = csvreader.term2idDict;
+    		HashMap<String, ArrayList<String>> term2domainDict = csvreader.term2domainDict;
+//    		List<Term> termList = new ArrayList<Term>();
+    		HashMap<String, Term> termDict = new HashMap<>();
+    		
+    		for (String term:this.majorTerms) {
+    			Term mterm = new Term();
+    			// set term
+    			mterm.setTerm(term);
+    			// set term ID
+    			mterm.setTermID(term, term2idDict);
+    			// set domain
+    			mterm.setTermDomain(term, term2domainDict);
+    			// set initial event status and time value
+    			if (term.equals(this.priorEvt)) {
+    				mterm.iniEvt=true;
+    				mterm.setTimeVal("0");
+    				mterm.setTimeUnit(this.timeUnit);
+    			} else {
+    				mterm.iniEvt=false;
+    				mterm.setTimeVal(this.timeVal);
+    				mterm.setTimeUnit(this.timeUnit);
+    				mterm.setTimeRel(this.timeRel);
+    			}
+//    			termList.add(mterm);
+    			termDict.put(term, mterm);
+    		}
+    		
+    		for (String num:this.numeratorList) {
+    			this.numTermList.add(termDict.get(num));
+    		} 
+    		for (String den:this.denominatorList) {
+    			this.denTermList.add(termDict.get(den));
+    		}
     }
 }
