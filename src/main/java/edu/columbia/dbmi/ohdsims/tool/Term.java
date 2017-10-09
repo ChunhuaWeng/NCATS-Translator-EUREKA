@@ -14,6 +14,10 @@ public class Term {
 	String timeUnit="day"; //default unit day
 	String timeRel=null; //before or after
 	
+	public void resetIniEvt() {
+		this.iniEvt=false;
+	}
+	
 	public void setTimeRel(String timeRel) {
 		this.timeRel = timeRel;
 	}

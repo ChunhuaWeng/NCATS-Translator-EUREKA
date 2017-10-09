@@ -14,7 +14,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Question question = new Question();
-        question.getQuestion();
+//        question.getQuestion();
+        question.setQuestion("what percent of type 1 diabetes mellitus patients use insulin after 7 days of diagnosis?");
         question.getTemplates();
         question.analyzeQuestion();
     		question.formatResult();

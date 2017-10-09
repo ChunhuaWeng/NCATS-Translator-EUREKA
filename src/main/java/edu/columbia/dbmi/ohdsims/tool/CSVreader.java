@@ -26,7 +26,7 @@ public class CSVreader {
                         this.term2idDict.get( term ).add(conceptID);
                     }
                 }
-                String domain = cont[2].toLowerCase();
+                String domain = cont[2];//.toLowerCase();
                 if (this.term2domainDict.get( term )==null) {
                     this.term2domainDict.put(term, new ArrayList<String>(Arrays.asList( domain )));
                 } else {

@@ -35,9 +35,14 @@ public class Question {
         this.question = scan.nextLine().toLowerCase();
     }
 
+    // set a question for testing
+    public void setQuestion(String sentence) {
+    		this.question = sentence;
+    }
+    
     //load templates
     public void getTemplates() throws IOException {
-        String tempPath = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/eureka/src/main/java/edu/columbia/dbmi/ohdsims/tool/raw_templates.txt";
+        String tempPath = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/raw_templates.txt";
         Reader reader = new Reader();
         reader.read(tempPath);
         this.newTempTab = reader.parseTemplate();
@@ -103,7 +108,7 @@ public class Question {
     
     public void formatResult() {
 		// load concept-domain dict file
-    		String csvFile = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/eureka/src/main/java/edu/columbia/dbmi/ohdsims/tool/CONCEPT.csv";
+    		String csvFile = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/CONCEPT.csv";
     		CSVreader csvreader = new CSVreader();
     		csvreader.csv2dict(csvFile);
     		HashMap<String, ArrayList<String>> term2idDict = csvreader.term2idDict;
@@ -138,7 +143,19 @@ public class Question {
         			this.numTermList.add(termDict.get(num));
         		} 
         		for (String den:this.denominatorList) {
-        			this.denTermList.add(termDict.get(den));
+        			// modify the initial event status, set to null
+        			Term denTerm = new Term();
+        			Term ori = termDict.get(den);
+        			denTerm.term = ori.term;
+        			denTerm.termID = ori.termID;
+        			denTerm.domain = ori.domain;
+        			denTerm.iniEvt = ori.iniEvt;
+        			denTerm.negation = ori.negation;
+        			denTerm.timeVal = ori.timeVal;
+        			denTerm.timeUnit = ori.timeUnit;
+        			denTerm.timeRel = ori.timeRel;
+        			denTerm.resetIniEvt();
+        			this.denTermList.add(denTerm);
         		}    			
     		}
     		// for another type of question
