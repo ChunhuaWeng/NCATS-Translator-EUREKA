@@ -298,7 +298,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		});
     })
     function goButton(){
-    	window.location.href=basePath + "ohdsi/sites";
+    	window.location.href=basePath + "ohdsi/results";
     }
     </script>
 </body>

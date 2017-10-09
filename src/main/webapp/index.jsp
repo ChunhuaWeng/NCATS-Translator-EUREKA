@@ -327,7 +327,7 @@ opacity:.7;
 			}
 
 		});
-    	//window.location.href=basePath + "ohdsi/cohort";
+    	window.location.href=basePath + "ohdsi/cohort";
     }
     
     </script>
