@@ -125,9 +125,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!-- /.container --> </nav>
 	<div class="container projects">
-		<div class="page-header projects-header " style="margin-top: 100px">
+		<!-- <div class="page-header projects-header " style="margin-top: 100px">
 			<h4>Test Results</h4>
-		</div>
+		</div> -->
 		<!-- <div class="panel panel-default">
   Default panel contents
   
@@ -145,7 +145,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		</div> -->
 		
-		 <div class="content-section-b">
+		 <div class="content-section-b" style="margin-top: 50px">
 
         <div class="container">
 
@@ -153,11 +153,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
-                    <h2 class="section-heading">Patient Retrieval</h2>
+                    <h1 class="section-heading" style="font-size:48px">86%</h1>
                     <p class="lead">Each participating contributor identifies qualified patients from an OHDSI dataset and generates case and control groups and their results.</p>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <canvas id="myChart"></canvas>
+                   <canvas id="myChart" width="100%" height="100%" style="width: 100%; height: 100%;"></canvas>
                 </div>
             </div>
 
@@ -224,8 +224,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		window.myPie = new Chart(ctx).Pie(pieData);
 	};
 
-	var demo = new countUp("myTargetElement", 24.02, 94.62, 2, 2.5);
-	demo.start();
     </script>
 	</body>
 
