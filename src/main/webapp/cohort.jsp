@@ -139,20 +139,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <th>Patient Group</th>
             <th>Description</th>
             <th>SQL file</th>
+            <th>Check on ATLAS</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">1</th>
-            <td>Case Control</td>
+            <td>Group 1</td>
             <td>Patient with Disease A</td>
             <td><button id="gobtn" type="button" class="btn btn-default">download file</button></td>
+            <td><button id="gotoATLAS" type="button" class="btn btn-default">GoTo ATLAS</button></td>
           </tr>
           <tr>
            <th scope="row">2</th>
-            <td>Control Control</td>
+            <td>Group 2</td>
             <td>Patient with Disease A and Drug B</td>
             <td><button id="gobtn" type="button" class="btn btn-default">download file</button></td>
+            <td><button id="gotoATLAS" type="button" class="btn btn-default">GoTo ATLAS</button></td>
           </tr>
         </tbody>
       </table>
@@ -197,13 +200,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  
         </div>
         </form>
-       
 	</div>
-	
+	<div class="container projects">
+		<div class="page-header projects-header ">
+			<h4>Choose Sites</h4>
+		</div>
+		<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Site Name</th>
+            <th>Description</th>
+            <th>Patient Count</th>
+            <th>Assign</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>SynPuf 1%</td>
+            <td>CMS 2008-2010 Data Entrepreneurs’ Synthetic Public Use File</td>
+            <td>23,000</td>
+            <td><input type="checkbox"></td>
+          </tr>
+          <tr>
+           <th scope="row">2</th>
+            <td>SynPuf 1k</td>
+            <td>CMS 2008-2010 Data Entrepreneurs’ Synthetic Public Use File</td>
+            <td>1,000</td>
+            <td><input type="checkbox"></td>
+          </tr>
+           <tr>
+           <th scope="row">2</th>
+            <td>OHDSI West Pending</td>
+            <td>NYP & Columbia University Medical Center</td>
+            <td>200,0000</td>
+            <td><input type="checkbox"></td>
+          </tr>
+           <th scope="row">2</th>
+            <td>OHDSI East Pending</td>
+            <td>Cornell Medical Center</td>
+            <td>200,0000</td>
+            <td><input type="checkbox"></td>
+          </tr>
+          
+        </tbody>
+      </table>
+</div>
+		
+	</div>
 	<div class="container projects">
 		<div class="page-header projects-header ">
 		</div>
-		 <button id="gotosites" type="button" class="btn btn-default">Continue</button>
+		 <button id="gotosites" type="button" class="btn btn-default">Execute</button>
 		</div>
 	<footer>
 	<div class="container">

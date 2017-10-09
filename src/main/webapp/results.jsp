@@ -138,10 +138,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	
-	<div class="container projects">
+	<!-- <div class="container projects">
+		<canvas id="myChart" class="col-lg-6"></canvas>
+		 <button id="gobtn" type="button" class="btn btn-default">Execute Test</button>
+		 <span id="number" style="font-size:100px">83%</span>
+
+		</div> -->
 		
-		 <!-- <button id="gobtn" type="button" class="btn btn-default">Execute Test</button> -->
-		</div>
+		 <div class="content-section-b">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Patient Retrieval</h2>
+                    <p class="lead">Each participating contributor identifies qualified patients from an OHDSI dataset and generates case and control groups and their results.</p>
+                </div>
+                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
 	<footer>
 	<div class="container">
 		<div class="row">
@@ -175,8 +198,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- Bootstrap Core JavaScript -->
 	<script src="<%=basePath%>js/bootstrap.min.js"></script>
 	<!-- Custom Theme JavaScript -->
-	<script src="<%=basePath%>js/grayscale.js"></script>
-</body>
+	
+	<script src="http://www.html5tricks.com/demo/html5-canvas-chart-js/js/Chart.js"></script>
+	<script type="text/javascript">
+	//var ctx = document.getElementById("myChart");
+	
+	var pieData = [
+		{
+			value: 300,
+			color:"#F7464A",
+			highlight: "#FF5A5E",
+			label: "Red"
+		},
+		{
+			value: 50,
+			color: "#46BFBD",
+			highlight: "#5AD3D1",
+			label: "Green"
+		},
+
+	];
+
+	window.onload = function(){
+		var ctx = document.getElementById("myChart").getContext("2d");
+		window.myPie = new Chart(ctx).Pie(pieData);
+	};
+
+	var demo = new countUp("myTargetElement", 24.02, 94.62, 2, 2.5);
+	demo.start();
+    </script>
+	</body>
 
 
 </html>
