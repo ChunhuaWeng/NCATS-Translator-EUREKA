@@ -69,7 +69,7 @@ public class Reader {
             		try {
             			numeratorIdx[i] = Integer.parseInt(rawNumeratorIdx[i]);
             		} catch (NumberFormatException nfe) {
-//            			System.out.println(nfe);
+            			System.out.println(nfe);
             		}
             }
             String[] rawDenominatorIdx = alsMtd[2].substring(1, alsMtd[2].length() - 1).split(";");
