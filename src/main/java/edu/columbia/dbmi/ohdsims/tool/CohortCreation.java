@@ -27,53 +27,68 @@ public class CohortCreation {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		Set<Integer> conceptid1=new HashSet<Integer>();
-		Set<Integer> conceptid2=new HashSet<Integer>();
-		conceptid1.add(201826);
-		conceptid1.add(316866);
+//		Set<Integer> conceptid1=new HashSet<Integer>();
+//		Set<Integer> conceptid2=new HashSet<Integer>();
+//		conceptid1.add(201826);
+//		//conceptid1.add(316866);
+//		
+//		//conceptid2.add(111123);
+//		//conceptid2.add(111346);
+//		
+//		
+//		//---
+//		.String[] test1=generateConceptSet(conceptid1,conceptid2,1);
+		//String x=generateConceptSetByOneConcept(201826);
+		//System.out.println("here="+x);
+		String id=createConceptSetByOneConcpetId("type 2 diabetes",201826);
+		System.out.println(id);
+//		HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+id+"/items",x);
+		//String conceptSetId1="923390";
 		
-		conceptid2.add(111123);
-		conceptid2.add(111346);
-		
-		
-		//---
-		String[] test1=generateConceptSet(conceptid1,conceptid2,1);
-		System.out.println(test1[0]);
-		String conceptSetId1="923390";
-		
-		generateCohortSQL(null);
+		//generateCohortSQL(null);
 		//HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+conceptSetId1+"/items",test1[0]);
 		//String conceptSetId2="923390";
 		//HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+conceptSetId1+"/items",test1[0]);
 		//----
 		
-		
 	}
-	public static String[] generateCohortSQL(String conceptJson) throws IOException{
-		String[] s=new String[2];
-		
+	
+	public static String createConceptSetByOneConcpetId(String conceptSetname,Integer conceptId){
+		String expression=generateConceptSetByOneConcept(conceptId);
+		long t1=System.currentTimeMillis();  
+		JSONObject jo=new JSONObject();
+		jo.accumulate("name", "eureka"+" "+conceptSetname+t1);
+		jo.accumulate("id", 23333);
+		System.out.println("====>"+jo);
+		String result=HttpUtil.doPost("http://api.ohdsi.org/WebAPI/conceptset/", jo.toString());
+		JSONObject rejo=JSONObject.fromObject(result);
+		HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+rejo.getString("id")+"/items",expression);
+		return rejo.getString("id");
+	}
+	public static String generateCohortSQL(List<Criterion> criteria) throws IOException{
 		JSONArray conceptSetArr=new JSONArray();
-		JSONArray ja = JSONArray.fromObject(conceptJson);
-		System.out.println(ATLASUtil.querybyconceptSetid(923390));
-		
-		conceptSetArr.add(ATLASUtil.querybyconceptSetid(923390));		
-		
-		Criterion c=new Criterion();
-		c.setNeg(false);
-		c.setInclusionCriterion(true);
-		c.setInitialEvent(false);
-		c.setDomain("Condition");
-		c.setConceptSetId(923390);
+		//JSONArray ja = JSONArray.fromObject(conceptJson);
+		//System.out.println(ATLASUtil.querybyconceptSetid(923390));
 		
 		
-		List<Criterion> criteria=new ArrayList<Criterion>();
-		criteria.add(c);
+		//Create conceptSets
+		for(int i=0;i<criteria.size();i++){
+			Integer conceptSetid=Integer.valueOf(createConceptSetByOneConcpetId(criteria.get(i).getConceptSetName(),criteria.get(i).getConceptSetId()));
+			conceptSetArr.add(ATLASUtil.querybyconceptSetid(conceptSetid));	
+			criteria.get(i).setConceptSetId(conceptSetid);
+		}
+
+//		
+//		
+//		List<Criterion> criteria=new ArrayList<Criterion>();
+//		criteria.add(c);
 		
 		//create cohort JSON
 		
 		JSONObject jcs = new JSONObject();
+		
 		JSONObject initialevent = setAnyConditionforInitialEvent();//Set inital event 
-		JSONObject joaddc = setAdditionalCriteria(criteria,ja);//Set additional criteria
+		JSONObject joaddc = setAdditionalCriteria(criteria);//Set additional criteria
 		JSONObject jofirst = new JSONObject();
 		JSONArray janull = new JSONArray();
 		
@@ -125,8 +140,8 @@ public class CohortCreation {
 		System.out.println(resultjson.get("targetSQL"));
 		//JSON 
 		
-		s[0]=(String) resultjson.get("targetSQL");
-		return s;
+		String sqlresult=(String) resultjson.get("targetSQL");
+		return sqlresult;
 	}
 	
 	public static String[] generateConceptSet(Set<Integer> conceptid1,Set<Integer> conceptid2,int type){
@@ -150,6 +165,16 @@ public class CohortCreation {
 		return result;
 	}
 	
+	public static String generateConceptSetByOneConcept(Integer conceptId){
+		//type 1 concept 1  VS. concept 1 and concept 2
+		//[{"conceptId":201826,"isExcluded":0,"includeDescendants":1,"includeMapped":1},{"conceptId":316866,"isExcluded":0,"includeDescendants":1,"includeMapped":1}]
+		JSONArray conceptSet=new JSONArray();
+		JSONObject jo=formatOneitem(conceptId);
+		conceptSet.add(jo);		
+		System.out.println("conceptSet="+conceptSet.toString());	
+		return conceptSet.toString();
+	}
+	
 	
 	
 	public static JSONObject formatOneitem(Integer conceptId){
@@ -166,13 +191,12 @@ public class CohortCreation {
 		return jo;
 	}
 	
-	public static JSONObject setAdditionalCriteria(List<Criterion> criteria,JSONArray conceptSetArr){	
+	public static JSONObject setAdditionalCriteria(List<Criterion> criteria){	
 		int conceptsetindex=0;
 		JSONObject additionalcriteria=new JSONObject();
 		JSONArray jarr=new JSONArray();
 		for (int x = 0; x < criteria.size(); x++) {
 			if(criteria.get(x).isInitialEvent()==false){
-				JSONObject jo = JSONObject.fromObject(conceptSetArr.get(conceptsetindex));
 				jarr.add(setCriteriaUnit(criteria.get(x).getConceptSetId(),criteria.get(x).isNeg(),criteria.get(x).isInclusionCriterion(),criteria.get(x).getDomain(),1));
 				conceptsetindex++;
 			}

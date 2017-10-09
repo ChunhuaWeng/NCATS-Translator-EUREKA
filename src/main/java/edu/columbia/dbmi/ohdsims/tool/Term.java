@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Term {
-	String term=null;
-	ArrayList<String> termID=new ArrayList<>();
-	ArrayList<String> domain=new ArrayList<>();
-	boolean iniEvt=false; // default initial event status false
-	boolean negation=false; // default negation status false
-	String timeVal="0"; // default time 0
-	String timeUnit="day"; //default unit day
-	String timeRel=null; //before or after
+	public String term=null;
+	public ArrayList<String> termID=new ArrayList<>();
+	public ArrayList<String> domain=new ArrayList<>();
+	public boolean iniEvt=false; // default initial event status false
+	public boolean negation=false; // default negation status false
+	public String timeVal="0"; // default time 0
+	public String timeUnit="day"; //default unit day
+	public String timeRel=null; //before or after
 	
 	public void resetIniEvt() {
 		this.iniEvt=false;

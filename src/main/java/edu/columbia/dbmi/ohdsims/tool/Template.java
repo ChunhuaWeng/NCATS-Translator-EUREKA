@@ -5,17 +5,17 @@ import java.util.List;
 
 public class Template {
 	
-	String template;
-	int[] majorConceptIdx; 
-	Integer timeValIdx=null;
-	Integer timeUnitIdx=null;
-	Integer timeRelIdx=null;
-	Integer priorEvtIdx=null;
-	Integer postEvtIdx=null;
-	String timeRelKeyword;
-	String priorEvt;
-	String postEvt;
-	AnalysisMethod method = new AnalysisMethod();
+	public String template;
+	public int[] majorConceptIdx; 
+	public Integer timeValIdx=null;
+	public Integer timeUnitIdx=null;
+	public Integer timeRelIdx=null;
+	public Integer priorEvtIdx=null;
+	public Integer postEvtIdx=null;
+	public String timeRelKeyword;
+	public String priorEvt;
+	public String postEvt;
+	public AnalysisMethod method = new AnalysisMethod();
 	
 	public void setAnalysisMethod(AnalysisMethod method) {
 		this.method = method;

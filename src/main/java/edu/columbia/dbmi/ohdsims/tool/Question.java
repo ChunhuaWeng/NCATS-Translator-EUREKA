@@ -10,22 +10,22 @@ import java.util.regex.Pattern;
 
 public class Question {
 
-    String question;
-	List<Template> newTempTab;
-	List<String> majorTerms = new ArrayList<>();
-	String timeVal;
-	String timeUnit;
-	String timeRel;
-	String priorEvt;
-	String postEvt;
-	AnalysisMethod method = new AnalysisMethod();
+    public String question;
+    public List<Template> newTempTab;
+    public List<String> majorTerms = new ArrayList<>();
+    public String timeVal;
+    public String timeUnit;
+    public String timeRel;
+    public String priorEvt;
+    public String postEvt;
+    public AnalysisMethod method = new AnalysisMethod();
 
 	// for percent questions
-	String analysisMethodName;
-	List<String> numeratorList = new ArrayList<>();
-	List<String> denominatorList = new ArrayList<>();
-	List<Term> numTermList = new ArrayList<Term>();
-	List<Term> denTermList = new ArrayList<Term>();
+    public String analysisMethodName;
+    public List<String> numeratorList = new ArrayList<>();
+    public List<String> denominatorList = new ArrayList<>();
+    public List<Term> numTermList = new ArrayList<Term>();
+    public List<Term> denTermList = new ArrayList<Term>();
 	private Scanner scan;
 	
 	//get a question

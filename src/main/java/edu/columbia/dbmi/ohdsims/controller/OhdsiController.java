@@ -28,7 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.columbia.dbmi.ohdsims.model.Criterion;
+import edu.columbia.dbmi.ohdsims.tool.CohortCreation;
+import edu.columbia.dbmi.ohdsims.tool.Question;
+import edu.columbia.dbmi.ohdsims.tool.Term;
 import edu.columbia.dbmi.ohdsims.util.APIUtil;
+import edu.columbia.dbmi.ohdsims.util.SQLUtil;
 import edu.columbia.dbmi.ohdsims.util.WebUtil;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -73,6 +78,53 @@ public class OhdsiController {
 	public String parseSentence(HttpSession httpSession, HttpServletRequest request, String sentence)
 			throws Exception {
 		System.out.println(sentence);	
+		 Question question = new Question();
+//       question.getQuestion();
+       question.setQuestion(sentence);
+       question.getTemplates();
+       question.analyzeQuestion();
+   	   question.formatResult();
+   		
+   		// display term objects
+   		System.out.println("Analysis method: "+question.analysisMethodName+"\n");
+   		System.out.print("numerator\n");
+   		for (Term item:question.numTermList) {
+   			System.out.println("term: "+item.term);
+   			System.out.println("term ID: "+item.termID);
+   			System.out.println("domain: "+item.domain);
+   			System.out.println("initial event status: "+item.iniEvt);
+   			System.out.println("before or after: "+item.timeRel);
+   			System.out.println("time: "+item.timeVal);
+   			System.out.println("time unit: "+item.timeUnit);
+   			System.out.println("\n");
+   		}
+   		System.out.print("\ndenominator\n");
+   		List<Criterion> numerator=new ArrayList<Criterion>();
+   		for (Term item:question.denTermList) {
+   			Criterion c=new Criterion();
+   			c.setConceptSetName(item.term);
+   			c.setConceptSetId(Integer.valueOf(item.termID.get(0)));
+   			c.setDomain(item.domain.get(0));
+   			c.setInitialEvent(item.iniEvt);
+   			if(item.timeRel==null){
+   				
+   			}else if(item.timeRel.equals("after")){
+   				c.setAfterDays(Integer.valueOf(item.timeVal));
+   				
+   			}else if(item.timeRel.equals("before")){
+   				c.setBeforeDays(Integer.valueOf(item.timeVal));
+   			}
+   			System.out.println("term: "+item.term);
+   			System.out.println("term ID: "+item.termID);
+   			System.out.println("domain: "+item.domain);
+   			System.out.println("initial event status: "+item.iniEvt);
+   			System.out.println("before or after: "+item.timeRel);
+   			System.out.println("time: "+item.timeVal);
+   			System.out.println("time unit: "+item.timeUnit);	
+   			numerator.add(c);
+   		}
+   		String sql=CohortCreation.generateCohortSQL(numerator);
+   		SQLUtil.executeSQL(sql);
 		return null;
 	}
 	
