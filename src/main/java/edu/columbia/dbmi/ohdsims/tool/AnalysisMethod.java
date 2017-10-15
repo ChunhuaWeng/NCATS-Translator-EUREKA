@@ -5,13 +5,26 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class AnalysisMethod {
-    String methodName;
-    int[] numeratorIdx;
-    int[] denominatorIdx;
-    List<String> numerator = new ArrayList<>();
-    List<String> denominator = new ArrayList<>();
+    public String methodName;
+//    public List<Integer> numeratorIdx;
+//    public List<Integer> denominatorIdx;    
+    public int[] numeratorIdx;
+    public int[] denominatorIdx;
+    public List<String> numerator = new ArrayList<>();
+    public List<String> denominator = new ArrayList<>();
 //    String denominator;
-    List<String> methodList;
+    public List<String> methodList;
+    
+    // for entity question
+    public int rankCutoffIdx;
+    
+    public void setRankCutoffIdx(Integer topRankIdx) {
+    		this.rankCutoffIdx = topRankIdx;
+    }
+    
+    public Integer getRankCutoffIdx() {
+    		return this.rankCutoffIdx;
+    }
 
     public void getData(List<String> methodList){
         this.methodList = methodList;

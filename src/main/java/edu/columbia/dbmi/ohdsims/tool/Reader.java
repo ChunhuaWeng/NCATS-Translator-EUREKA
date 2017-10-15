@@ -1,7 +1,14 @@
 package edu.columbia.dbmi.ohdsims.tool;
 import java.io.*;
 import java.util.*;
+//import java.util.Map.Entry;
+
 import org.apache.commons.lang3.StringUtils;
+//import org.json.simple.JSONObject;
+//import org.json.JSONException;
+//import org.json.simple.JSONArray;
+//import org.json.simple.parser.ParseException;
+//import org.json.simple.parser.JSONParser;
 
 public class Reader {
     public List<String> rec = new ArrayList<String>();
@@ -17,8 +24,8 @@ public class Reader {
     }
 
     public List<Template> parseTemplate() {
-    		List<Template> templateObjList = new ArrayList<>();
-        for (String sent:this.rec) {
+    		List<Template> templateObjList = new ArrayList<>(); // Class Template is for all question templates
+        for (String sent:this.rec) {        		
         		Template tplt = new Template();
             String[] val = sent.split("##");
             
@@ -53,42 +60,80 @@ public class Reader {
                 int postEvtIdx = Integer.parseInt(tempRel[1]);
                 tplt.setPostEvtIdx(postEvtIdx);
             } 
-
-            //add analysis method            
+            
+            // add domain info
+            String rawDomain = val[5].substring(1, val[5].length()-1);
+//            System.out.println(rawDomain);
+            String[] rawDomainList = rawDomain.split(",");
+            for (String rawPair:rawDomainList) {
+	        		String[] conceptDomainPair = rawPair.substring(1, rawPair.length()-1).split(";");
+	        		String majorIdx = conceptDomainPair[0];
+	        		String majorDomain = conceptDomainPair[1];
+	        		tplt.setDomain(majorIdx, majorDomain);
+            }
+            
+            //add analysis method
             String rawAlsMtd = val[4].substring(1, val[4].length() - 1);
             String[] alsMtd = rawAlsMtd.split(",");
             String mtdType = alsMtd[0];
-            String[] rawNumeratorIdx = alsMtd[1].substring(1, alsMtd[1].length()-1).split(";");        
-//            for (int i=0;i<rawNumeratorIdx.length;i++) {
-//            		System.out.println(rawNumeratorIdx[i]);
-//            }
             
-            int[] numeratorIdx = new int[rawNumeratorIdx.length];
+            // if this is a ratio question
+            if (mtdType.equals("ratio")) {
+                // the numerator and denominator is only for the ratio method
+                String[] rawNumeratorIdx = alsMtd[1].substring(1, alsMtd[1].length()-1).split(";");        
+                int[] numeratorIdx = new int[rawNumeratorIdx.length];
 
-            for (int i=0;i<rawNumeratorIdx.length; i++) {
-            		try {
-            			numeratorIdx[i] = Integer.parseInt(rawNumeratorIdx[i]);
-            		} catch (NumberFormatException nfe) {
-            			System.out.println(nfe);
-            		}
-            }
-            String[] rawDenominatorIdx = alsMtd[2].substring(1, alsMtd[2].length() - 1).split(";");
-            int[] denominatorIdx = new int[rawDenominatorIdx.length];
-            for (int i=0;i<rawDenominatorIdx.length; i++) {
-	        		try {
-	        			denominatorIdx[i] = Integer.parseInt(rawDenominatorIdx[i]);
-	        		} catch (NumberFormatException nfe) {
-	        		}
-            }            
-            AnalysisMethod method = new AnalysisMethod();    
-            if (mtdType.equals("ratio")) { // use the ratio method
+                for (int i=0;i<rawNumeratorIdx.length; i++) {
+                		try {
+                			numeratorIdx[i] = Integer.parseInt(rawNumeratorIdx[i]);
+                		} catch (NumberFormatException nfe) {
+                			System.out.println(nfe);
+                		}
+                }
+                String[] rawDenominatorIdx = alsMtd[2].substring(1, alsMtd[2].length() - 1).split(";");
+                int[] denominatorIdx = new int[rawDenominatorIdx.length];
+                for (int i=0;i<rawDenominatorIdx.length; i++) {
+    	        		try {
+    	        			denominatorIdx[i] = Integer.parseInt(rawDenominatorIdx[i]);
+    	        		} catch (NumberFormatException nfe) {
+    	        		}
+                }
+                AnalysisMethod method = new AnalysisMethod();    
             		method.setMethodName(mtdType);
             		method.setNumeratorIdx(numeratorIdx);
             		method.setDenominatorIdx(denominatorIdx);
+                tplt.setAnalysisMethod(method);
+                templateObjList.add(tplt);                
+            } else if (mtdType.equals("entity")) {
+            		// need entity and an associated integer
+            		String rankIdx = alsMtd[1];
+//            		String entityIdx = alsMtd[2];
+                AnalysisMethod method = new AnalysisMethod();    
+            		method.setMethodName(mtdType);
+            		method.setRankCutoffIdx(Integer.parseInt(rankIdx));
+//            		method.setEntityIdx(Integer.parseInt(entityIdx));
+                tplt.setAnalysisMethod(method);
+                templateObjList.add(tplt);
+            } else if (mtdType.equals("dist")) {
+            		// need entity
+//            		String entityIdx = alsMtd[1];
+            		AnalysisMethod method = new AnalysisMethod();
+            		method.setMethodName(mtdType);
+//            		method.setEntityIdx(Integer.parseInt(entityIdx));
+            		tplt.setAnalysisMethod(method);
+            		templateObjList.add(tplt);
+            } else if (mtdType.equals("gender_ratio")) {
+//            		String entityIdx = alsMtd[1];
+            		AnalysisMethod method = new AnalysisMethod();
+            		method.setMethodName(mtdType);
+//            		method.setEntityIdx(Integer.parseInt(entityIdx));
+            		tplt.setAnalysisMethod(method);
+            		templateObjList.add(tplt);            		
+            } else {
+            	
             }
-            tplt.setAnalysisMethod(method);
-            templateObjList.add(tplt);
         }
+        
         return templateObjList;
     }
 }

@@ -41,10 +41,10 @@ import edu.stanford.nlp.util.CoreMap;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.python.core.PyFunction;
-import org.python.core.PyInteger;
-import org.python.core.PyObject;
-import org.python.util.PythonInterpreter;
+//import org.python.core.PyFunction;
+//import org.python.core.PyInteger;
+//import org.python.core.PyObject;
+//import org.python.util.PythonInterpreter;
 
 @Controller
 @RequestMapping("/ohdsi")

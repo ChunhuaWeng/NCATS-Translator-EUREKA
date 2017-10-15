@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Term {
+public class Term_bk1015 {
 	public String term=null;
 	public ArrayList<String> termID=new ArrayList<>();
-	public List<String> domain;
+	public ArrayList<String> domain=new ArrayList<>();
 	public boolean iniEvt=false; // default initial event status false
 	public boolean negation=false; // default negation status false
 	public String timeVal="0"; // default time 0
@@ -30,15 +30,9 @@ public class Term {
     		this.termID = termConceptIDDict.get(name);
     }	
     
-    public void setTermDomain(List<String> domain) {
-		this.domain = domain;
-    }
-    
-    public void getTermDomain() {
-    		for(String x:this.domain) {
-    			System.out.println(x);
-    		}
-    }
+    public void setTermDomain(String name, HashMap<String, ArrayList<String>> termDomainDict) {
+		this.domain = termDomainDict.get(name);
+}	    
 	
 	public void setTimeUnit(String timeUnit) {
 		this.timeUnit = timeUnit;
