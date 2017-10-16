@@ -10,7 +10,7 @@ public class Rscripts {
 //	connectionDetails <- createConnectionDetails(dbms = "postgresql",
 //	                                             server = "localhost/synpuf1k",
 //	                                             user = "postgres",
-//	                                             password = "granite")
+//	                                             password = "postgres")
 //
 //	cdmDatabaseSchema <- "omopcdm"
 //
@@ -40,7 +40,7 @@ public class Rscripts {
 //	connectionDetails <- createConnectionDetails(dbms = "postgresql",
 //	                                             server = "localhost/synpuf1k",
 //	                                             user = "postgres",
-//	                                             password = "granite")
+//	                                             password = "postgres")
 //
 //	cdmDatabaseSchema <- "omopcdm"
 //
@@ -71,7 +71,7 @@ public class Rscripts {
 //	connectionDetails <- createConnectionDetails(dbms = "postgresql",
 //	                                             server = "localhost/synpuf1k",
 //	                                             user = "postgres",
-//	                                             password = "granite")
+//	                                             password = "postgres")
 //
 //	cdmDatabaseSchema <- "omopcdm"
 //
@@ -99,6 +99,87 @@ public class Rscripts {
 //	femaleNum <- data[1,2]
 //	maleNum <- data[2,2]
 //	ratio <- maleNum/femaleNum
+
+//	count1.R
+//	library(CohortMethod) 
+//	library(SqlRender)
+//
+//	## create a connection
+//	connectionDetails <- createConnectionDetails(dbms = "postgresql",
+//	                                             server = "localhost/synpuf1k",
+//	                                             user = "postgres",
+//	                                             password = "postgres")
+//
+//	cdmDatabaseSchema <- "omopcdm"
+//
+//	sql <- paste(" 
+//				SELECT O.person_id FROM (
+//					SELECT DISTINCT co.person_id FROM condition_occurrence AS co
+//						INNER JOIN (
+//							SELECT concept_id FROM concept WHERE concept_name LIKE 'Obese'
+//							) AS cpt ON co.condition_concept_id=cpt.concept_id) AS O
+//					INNER JOIN (
+//						SELECT S.person_id FROM 
+//							(SELECT DISTINCT co.person_id FROM condition_occurrence AS co
+//								INNER JOIN (
+//									SELECT concept_id FROM concept WHERE concept_name LIKE 'SLEEP'
+//									) AS cpt ON co.condition_concept_id=cpt.concept_id) AS S
+//							INNER JOIN (
+//								SELECT DISTINCT co.person_id FROM condition_occurrence AS co
+//								INNER JOIN (
+//									SELECT concept_id FROM concept WHERE concept_name LIKE 'Hypertension'
+//									) AS cpt ON co.condition_concept_id=cpt.concept_id) AS H ON S.person_id=H.person_id) AS a ON a.person_id=O.person_id
+//	             ")
+//
+//	sql <- SqlRender::renderSql(sql, cdm_database_schema = cdmDatabaseSchema)$sql
+//	sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
+//	connection <- connect(connectionDetails)
+//	data <- querySql(connection, sql)
+//
+//	## analyze data, get age distribution by bins
+//	# age.num <- data$AGE
+//	# age.group <- cut(age.num,breaks = c(seq(0,100,by=10)))
+//	# age.group.df <- as.data.frame(table(age.group))
+	
+	
+// count2.R
+//	library(CohortMethod) 
+//	library(SqlRender)
+//
+//	## create a connection
+//	connectionDetails <- createConnectionDetails(dbms = "postgresql",
+//	                                             server = "localhost/synpuf1k",
+//	                                             user = "postgres",
+//	                                             password = "postgres")
+//
+//	cdmDatabaseSchema <- "omopcdm"
+//
+//	sql <- paste(" 
+//			SELECT c.person_id FROM (
+//				SELECT person_id FROM condition_occurrence AS b
+//					INNER JOIN (
+//						SELECT concept_id FROM concept 
+//							WHERE concept_name LIKE 'Chronic pain') AS a ON b.condition_concept_id=a.concept_id) AS c 
+//				INNER JOIN (
+//						SELECT person_id FROM condition_occurrence AS b
+//							INNER JOIN (
+//								SELECT concept_id FROM concept 
+//									WHERE concept_name LIKE 'Depressive disorder') AS a ON b.condition_concept_id=a.concept_id
+//					) AS d ON c.person_id=d.person_id
+//	             ")
+//
+//	sql <- SqlRender::renderSql(sql, cdm_database_schema = cdmDatabaseSchema)$sql
+//	sql <- SqlRender::translateSql(sql, targetDialect = connectionDetails$dbms)$sql
+//	connection <- connect(connectionDetails)
+//	data <- querySql(connection, sql)
+//
+//	## analyze data, get age distribution by bins
+//	# age.num <- data$AGE
+//	# age.group <- cut(age.num,breaks = c(seq(0,100,by=10)))
+//	# age.group.df <- as.data.frame(table(age.group))
+
+
+
 
 
 

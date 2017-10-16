@@ -21,9 +21,14 @@ public class Main {
         Question question = new Question();
 //        question.getQuestion();
 //        question.setQuestion("what percent of type 1 diabetes mellitus patients use insulin after 7 days of diagnosis?");
-//        question.setQuestion("what are the top 2 drugs used by hypertensive disorder patients?");
+//        question.setQuestion("what is the prevalence of insulin use among type 1 diabetes mellitus patients?");
+        question.setQuestion("what 2 drugs are most commonly used by patients with hypertensive disorder?");
 //        question.setQuestion("what is the age distribution of Alzheimer’s disease patients?"); 
-        question.setQuestion("what is the gender ratio among hypertensive disorder patients?");
+//        question.setQuestion("what is the ratio of male and female hypertensive disorder patients?");
+//        question.setQuestion("what is the distribution of time in between hemoglobin a1c testing for patients with diabetes?");
+//        question.setQuestion("how many patients with depression were previous diagnosed with chronic pain?");
+//        question.setQuestion("how many obese patients with hypertension have had sleep studies?");
+
         question.getTemplates();
         question.analyzeQuestion();
     		question.formatResult();

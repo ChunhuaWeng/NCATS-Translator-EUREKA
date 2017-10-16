@@ -53,13 +53,17 @@ public class Reader {
 
             //add time relation
             String rawTempRel = val[3].substring(1, val[3].length() - 1);
-            if (StringUtils.isEmpty(rawTempIdx)==false){
+            if (StringUtils.isEmpty(rawTempRel)==false){
                 String[] tempRel = rawTempRel.split(",");
+                
                 int priorEvtIdx = Integer.parseInt(tempRel[0]);
                 tplt.setPriorEvtIdx(priorEvtIdx);
                 int postEvtIdx = Integer.parseInt(tempRel[1]);
                 tplt.setPostEvtIdx(postEvtIdx);
+//                System.out.println("prior evt: "+tplt.priorEvtIdx);
+//                System.out.println("post evt: "+tplt.postEvtIdx);                
             } 
+
             
             // add domain info
             String rawDomain = val[5].substring(1, val[5].length()-1);
@@ -129,6 +133,11 @@ public class Reader {
 //            		method.setEntityIdx(Integer.parseInt(entityIdx));
             		tplt.setAnalysisMethod(method);
             		templateObjList.add(tplt);            		
+            } else if (mtdType.equals("count")){
+            		AnalysisMethod method = new AnalysisMethod();
+            		method.setMethodName(mtdType);
+            		tplt.setAnalysisMethod(method);
+            		templateObjList.add(tplt);                 		
             } else {
             	
             }

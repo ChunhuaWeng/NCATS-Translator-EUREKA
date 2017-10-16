@@ -2,6 +2,7 @@ package edu.columbia.dbmi.ohdsims.tool;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -56,7 +57,14 @@ public class Question {
         Reader reader = new Reader();
         reader.read(tempPath);
         this.newTempTab = reader.parseTemplate(); // template list
+        
+//        // display templates
+//        for (Template temp:this.newTempTab) {
+//        		System.out.println(temp.template);
+//        }
     }
+    
+    
 
     //apply templates to the question, return keywords and the associated attributes
     public void analyzeQuestion() {
@@ -78,12 +86,27 @@ public class Question {
                     		// add major terms
                     		this.majorTerms.add(mat.group(majorConceptIdx[i]));
                     }
-                    this.timeRel = mat.group(timeRelIdx);
-                    this.timeVal = mat.group(timeValIdx);
-                    this.timeUnit = mat.group(timeUnitIdx).replaceAll("s$", "");          
-                    this.priorEvt = mat.group(priorEvtIdx);
-                    this.postEvt = mat.group(postEvtIdx);
-
+                    if (timeRelIdx>0) {
+                    		this.timeRel = mat.group(timeRelIdx);
+                    		if (Arrays.asList("previous","previously","before").contains(this.timeRel)) {
+                    			this.timeRel = "before";
+                    		}
+                    		if (Arrays.asList("after").contains(this.timeRel)) {
+                    			this.timeRel = "after";
+                    		}
+                    }
+                    if (timeValIdx>0) {
+                    		this.timeVal = mat.group(timeValIdx);
+                    }
+                    if (timeUnitIdx>0) {
+                    		this.timeUnit = mat.group(timeUnitIdx).replaceAll("s$", "");
+                    }
+                    if (priorEvtIdx>0) {
+                    		this.priorEvt = mat.group(priorEvtIdx);
+                    }          
+                    if (postEvtIdx>0) {
+                    		this.postEvt = mat.group(postEvtIdx);
+                    }
                 } else {
                     for (int i=0;i<majorConceptIdx.length;i++){
                     		this.majorTerms.add(mat.group(majorConceptIdx[i]));
@@ -136,6 +159,8 @@ public class Question {
                 } else if (this.analysisMethodName.equals("gender_ratio")){
 //                		this.method.keyEntityIdx = val.method.keyEntityIdx;
 //                		this.keyEntity = mat.group(this.method.keyEntityIdx);
+                } else if (this.analysisMethodName.equals("count")) {
+                	
                 } else {
 	            		System.out.println("New methods required for "+this.analysisMethodName);
 	//            		scan = new Scanner( System.in );
@@ -213,6 +238,12 @@ public class Question {
 	  					this.termList.add(termDict.get(entry));
 	  				}
 	  			}	  			
+	  		} else if (this.analysisMethodName.equals("count")) {
+	  			for (String entry:termDict.keySet()) {
+	  				if (this.domainDict.get(entry)!=null) {
+	  					this.termList.add(termDict.get(entry));
+	  				}
+	  			}	  	  			
 	  		} else {
 	  			
 	  		}
