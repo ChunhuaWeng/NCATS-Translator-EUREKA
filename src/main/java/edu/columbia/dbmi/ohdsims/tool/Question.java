@@ -53,7 +53,7 @@ public class Question {
     
     //load templates
     public void getTemplates() throws IOException {
-        String tempPath = "/Users/wei/Dropbox/Research/biotranslator_hackathon/raw_templates.txt";
+        String tempPath = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/raw_templates.txt";
         Reader reader = new Reader();
         reader.read(tempPath);
         this.newTempTab = reader.parseTemplate(); // template list
