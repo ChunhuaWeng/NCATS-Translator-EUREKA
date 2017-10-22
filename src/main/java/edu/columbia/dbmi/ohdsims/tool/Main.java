@@ -21,13 +21,11 @@ public class Main {
         Question question = new Question();
 //        question.getQuestion();
 //        question.setQuestion("what percent of type 1 diabetes mellitus patients use insulin after 7 days of diagnosis?");
+        question.setQuestion("What percent of hip replacement patients took warfarin and had gastrointestinal bleeding?");       
 //        question.setQuestion("what is the prevalence of insulin use among type 1 diabetes mellitus patients?");
-        question.setQuestion("what 2 drugs are most commonly used by patients with hypertensive disorder?");
+//        question.setQuestion("What 10 drugs are most commonly used by patients with hypertensive disorder?");
 //        question.setQuestion("what is the age distribution of Alzheimer’s disease patients?"); 
 //        question.setQuestion("what is the ratio of male and female hypertensive disorder patients?");
-//        question.setQuestion("what is the distribution of time in between hemoglobin a1c testing for patients with diabetes?");
-//        question.setQuestion("how many patients with depression were previous diagnosed with chronic pain?");
-//        question.setQuestion("how many obese patients with hypertension have had sleep studies?");
 
         question.getTemplates();
         question.analyzeQuestion();
@@ -47,7 +45,7 @@ public class Main {
         			System.out.println("time unit: "+item.timeUnit);
         			System.out.println("\n");
         		}
-        		System.out.print("\ndenominator\n");
+        		System.out.print("denominator\n");
         		for (Term item:question.denTermList) {
         			System.out.println("term: "+item.term);
         			System.out.println("term ID: "+item.termID);
@@ -55,7 +53,8 @@ public class Main {
         			System.out.println("initial event status: "+item.iniEvt);
         			System.out.println("before or after: "+item.timeRel);
         			System.out.println("time: "+item.timeVal);
-        			System.out.println("time unit: "+item.timeUnit);			
+        			System.out.println("time unit: "+item.timeUnit);	
+        			System.out.println("\n");
         		}    			
     		} else {
     			System.out.println("major terms");

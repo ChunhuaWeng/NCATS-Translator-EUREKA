@@ -25,7 +25,7 @@ public class Reader {
 
     public List<Template> parseTemplate() {
     		List<Template> templateObjList = new ArrayList<>(); // Class Template is for all question templates
-        for (String sent:this.rec) {        		
+        for (String sent:this.rec) {    		
         		Template tplt = new Template();
             String[] val = sent.split("##");
             
@@ -55,11 +55,33 @@ public class Reader {
             String rawTempRel = val[3].substring(1, val[3].length() - 1);
             if (StringUtils.isEmpty(rawTempRel)==false){
                 String[] tempRel = rawTempRel.split(",");
-                
-                int priorEvtIdx = Integer.parseInt(tempRel[0]);
-                tplt.setPriorEvtIdx(priorEvtIdx);
-                int postEvtIdx = Integer.parseInt(tempRel[1]);
-                tplt.setPostEvtIdx(postEvtIdx);
+                HashMap<String, String> evtIdxTimePt = new HashMap<>();
+                for (String pair:tempRel) {
+                		String[]splitPair = pair.substring(1, pair.length()-1).split(";");
+                		evtIdxTimePt.put(splitPair[0], splitPair[1]);
+                }
+                for (String x:evtIdxTimePt.keySet()) {
+                		if ("0".equals(evtIdxTimePt.get(x))) {
+                			int iniEvtIdx = Integer.parseInt(x);
+//                			System.out.println("iniEvtIdx: "+iniEvtIdx);
+                			tplt.setIniEvtIdx(iniEvtIdx);
+                		} else if ("1".equals(evtIdxTimePt.get(x))) {
+                			int postEvtIdx = Integer.parseInt(x);
+//                			System.out.println("postEvtIdx: "+postEvtIdx);
+                			tplt.setPostEvtIdx(postEvtIdx);
+                		} else if ("-1".equals(evtIdxTimePt.get(x))) {
+                			int priorEvtIdx = Integer.parseInt(x);
+                			tplt.setPriorEvtIdx(priorEvtIdx);
+//                			System.out.println("priorEvtIdx: "+priorEvtIdx);
+                		} else {
+                			
+                		}
+                }
+//                int priorEvtIdx = Integer.parseInt(tempRel[0]);
+//                tplt.setPriorEvtIdx(priorEvtIdx);
+//                int postEvtIdx = Integer.parseInt(tempRel[1]);
+//                tplt.setPostEvtIdx(postEvtIdx);
+//                System.out.println("init evt: "+tplt.iniEvtIdx);
 //                System.out.println("prior evt: "+tplt.priorEvtIdx);
 //                System.out.println("post evt: "+tplt.postEvtIdx);                
             } 

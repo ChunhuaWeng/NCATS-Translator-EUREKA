@@ -15,11 +15,13 @@ public class Template {
 	public Integer timeValIdx=null;
 	public Integer timeUnitIdx=null;
 	public Integer timeRelIdx=null;
+	public Integer iniEvtIdx=null;
 	public Integer priorEvtIdx=null;
 	public Integer postEvtIdx=null;
 	public String timeRelKeyword;
 	public String priorEvt;
 	public String postEvt;
+	public String iniEvt;
 	public AnalysisMethod method = new AnalysisMethod();
 	public LinkedHashMap<String, String> idxDomainDict = new LinkedHashMap<>(); 
 	
@@ -43,7 +45,7 @@ public class Template {
 		this.timeRelIdx = timeRelIdx;
 	}
 	
-	public int getTimeRelIdx() {
+	public Integer getTimeRelIdx() {
 		return this.timeRelIdx;
 	}
 	
@@ -51,7 +53,7 @@ public class Template {
 		this.timeValIdx = timeValIdx;
 	}
 	
-	public int getTimeValIdx() {
+	public Integer getTimeValIdx() {
 		return this.timeValIdx;
 	}
 	
@@ -59,7 +61,7 @@ public class Template {
 		this.timeUnitIdx = timeUnitIdx;
 	}
 	
-	public int getTimeUnitIdx() {
+	public Integer getTimeUnitIdx() {
 		return this.timeUnitIdx;
 	}
 	
@@ -67,9 +69,25 @@ public class Template {
 		this.priorEvtIdx = priorEvtIdx;
 	}
 	
+	public Integer getPriorEvtIdx() {
+		return this.priorEvtIdx;
+	}
+	
+	public void setIniEvtIdx(int iniEvtIdx) {
+		this.iniEvtIdx = iniEvtIdx;
+	}	
+	
+	public Integer getIniEvtIdx() {
+		return this.iniEvtIdx;
+	}
+	
 	public void setPostEvtIdx(int postEvtIdx) {
 		this.postEvtIdx = postEvtIdx;
  	}
+	
+	public Integer getPostEvtIdx() {
+		return this.postEvtIdx;
+	}
 	
 	public void setTemplate(String template) {
 		this.template = template;

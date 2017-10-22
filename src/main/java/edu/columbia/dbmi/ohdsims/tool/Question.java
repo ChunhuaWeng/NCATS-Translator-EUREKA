@@ -21,6 +21,7 @@ public class Question {
     public String timeRel;
     public String priorEvt;
     public String postEvt;
+    public String iniEvt;
     public String analysisMethodName;
     public AnalysisMethod method = new AnalysisMethod();
     public LinkedHashMap<String, String> domainDict = new LinkedHashMap<String, String>();
@@ -53,7 +54,7 @@ public class Question {
     
     //load templates
     public void getTemplates() throws IOException {
-        String tempPath = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/raw_templates.txt";
+        String tempPath = "/Users/wei/Dropbox/Research/biotranslator_hackathon/raw_templates.txt";
         Reader reader = new Reader();
         reader.read(tempPath);
         this.newTempTab = reader.parseTemplate(); // template list
@@ -76,17 +77,18 @@ public class Question {
         		Integer timeUnitIdx = val.timeUnitIdx;
         		Integer timeRelIdx = val.timeRelIdx;
         		Integer priorEvtIdx = val.priorEvtIdx;
+        		Integer iniEvtIdx = val.iniEvtIdx;
         		Integer postEvtIdx = val.postEvtIdx;
         		LinkedHashMap<String, String> idxDomainDict = val.idxDomainDict;
-        		        		
+        		
             Matcher mat = pat.matcher( this.question );
             if (mat.matches()==true) {
-                if (timeRelIdx!=null&&timeValIdx!=null&&timeUnitIdx!=null&&priorEvtIdx!=null&&postEvtIdx!=null) {
+                if (iniEvtIdx!=null||priorEvtIdx!=null||postEvtIdx!=null) {
                     for (int i=0;i<majorConceptIdx.length;i++){ //idx={1,3,4,5,1,3}, tempValIdx=4
                     		// add major terms
                     		this.majorTerms.add(mat.group(majorConceptIdx[i]));
                     }
-                    if (timeRelIdx>0) {
+                    if (timeRelIdx!=null) {
                     		this.timeRel = mat.group(timeRelIdx);
                     		if (Arrays.asList("previous","previously","before").contains(this.timeRel)) {
                     			this.timeRel = "before";
@@ -95,16 +97,21 @@ public class Question {
                     			this.timeRel = "after";
                     		}
                     }
-                    if (timeValIdx>0) {
+                    if (timeValIdx!=null) {
                     		this.timeVal = mat.group(timeValIdx);
                     }
-                    if (timeUnitIdx>0) {
+                    if (timeUnitIdx!=null) {
                     		this.timeUnit = mat.group(timeUnitIdx).replaceAll("s$", "");
+                    }               
+                    if (iniEvtIdx!=null) {
+                    		this.iniEvt = mat.group(iniEvtIdx);
                     }
-                    if (priorEvtIdx>0) {
+                    
+                    if (priorEvtIdx!=null) {
                     		this.priorEvt = mat.group(priorEvtIdx);
-                    }          
-                    if (postEvtIdx>0) {
+                    }
+
+                    if (postEvtIdx!=null) {
                     		this.postEvt = mat.group(postEvtIdx);
                     }
                 } else {
@@ -169,7 +176,7 @@ public class Question {
             }
         }
     }
-
+	
 	  public void formatResult() {
 		  
 	  		HashMap<String, Term> termDict = new HashMap<>();
@@ -182,12 +189,37 @@ public class Question {
 	  			List<String> domainArray = new ArrayList<>();
 	  			domainArray.add(this.domainDict.get(term));
 	  			mterm.setTermDomain(domainArray);
+	  			
 	  			// set initial event status and time value
-	  			if (term.equals(this.priorEvt)) {
+	  			if (term.equals(this.iniEvt)) {
 	  				mterm.iniEvt=true;
 	  				mterm.setTimeVal("0");
 	  				mterm.setTimeUnit(this.timeUnit);
-	  			} else {
+//	  			} else if (term.equals(this.priorEvt)) {
+//	  				mterm.iniEvt=false;
+//	  				mterm.setTimeVal("-1");
+//	  				mterm.setTimeUnit(this.timeUnit);
+//	  			} else if (term.equals(this.postEvt)) {
+//	  				mterm.iniEvt=false;
+//	  				mterm.setTimeVal("1");
+//	  				mterm.setTimeUnit(this.timeUnit);
+	  			} else if (term.equals(this.priorEvt)) {
+	  				mterm.iniEvt=false;
+	  				mterm.setTimeVal(this.timeVal);
+	  				mterm.setTimeUnit(this.timeUnit);
+	  				mterm.setTimeRel("before");
+//	  				if ("before".equals(this.timeRel)) {
+//	  					mterm.setTimeRel(this.timeRel);
+//	  				}	  				
+	  			} else if (term.equals(this.postEvt)) {
+	  				mterm.iniEvt=false;
+	  				mterm.setTimeVal(this.timeVal);
+	  				mterm.setTimeUnit(this.timeUnit);
+	  				mterm.setTimeRel("after");
+//	  				if ("after".equals(this.timeRel)) {
+//	  					mterm.setTimeRel(this.timeRel);
+//	  				}
+	  			} else  {
 	  				mterm.iniEvt=false;
 	  				mterm.setTimeVal(this.timeVal);
 	  				mterm.setTimeUnit(this.timeUnit);
