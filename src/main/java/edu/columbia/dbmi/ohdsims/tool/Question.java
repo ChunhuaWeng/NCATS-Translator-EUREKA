@@ -54,7 +54,7 @@ public class Question {
     
     //load templates
     public void getTemplates() throws IOException {
-        String tempPath = "/Users/wei/Dropbox/Research/biotranslator_hackathon/raw_templates.txt";
+        String tempPath = "/Users/weiwei/Dropbox/Research/biotranslator_hackathon/raw_templates.txt";
         Reader reader = new Reader();
         reader.read(tempPath);
         this.newTempTab = reader.parseTemplate(); // template list
@@ -235,18 +235,19 @@ public class Question {
 	      		} 
 	      		for (String den:this.denominatorList) {
 	      			// modify the initial event status, set to null
-	      			Term denTerm = new Term();
-	      			Term ori = termDict.get(den);
-	      			denTerm.term = ori.term;
-	      			denTerm.termID = ori.termID;
-	      			denTerm.domain = ori.domain;
-	      			denTerm.iniEvt = ori.iniEvt;
-	      			denTerm.negation = ori.negation;
-	      			denTerm.timeVal = ori.timeVal;
-	      			denTerm.timeUnit = ori.timeUnit;
-	      			denTerm.timeRel = ori.timeRel;
-	      			denTerm.resetIniEvt();
-	      			this.denTermList.add(denTerm);
+//	      			Term denTerm = new Term();
+//	      			Term ori = termDict.get(den);
+//	      			denTerm.term = ori.term;
+//	      			denTerm.termID = ori.termID;
+//	      			denTerm.domain = ori.domain;
+//	      			denTerm.iniEvt = ori.iniEvt;
+//	      			denTerm.negation = ori.negation;
+//	      			denTerm.timeVal = ori.timeVal;
+//	      			denTerm.timeUnit = ori.timeUnit;
+//	      			denTerm.timeRel = ori.timeRel;
+//	      			denTerm.resetIniEvt();
+//	      			this.denTermList.add(denTerm);
+	      			this.denTermList.add(termDict.get(den));
 	      		}    			
 	  		} else if (this.analysisMethodName.equals("entity")) {
 	  			for (String entry:termDict.keySet()) {
