@@ -14,32 +14,33 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <title>EUREKA</title>
-  <!-- Bootstrap Core CSS -->
+<!-- Bootstrap Core CSS -->
 <link href="<%=basePath%>css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom CSS -->
 <link href="<%=basePath%>css/landing-page.css" rel="stylesheet">
 <link href="<%=basePath%>css/grayscale.css" rel="stylesheet">
 <!-- Custom Fonts -->
-<link href="<%=basePath%>css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="<%=basePath%>css/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
 <style>
-.input-group
-{
-margin-top:3px;
-margin-bottom:3px;
+.input-group {
+	margin-top: 3px;
+	margin-bottom: 3px;
 }
-.model-bgcol 
-{ 
-background-color:#428bca;
+
+.model-bgcol {
+	background-color: #428bca;
 }
-.inputField{
-border-top-width:0px;
-border-bottom-width:0px;
-border-left-width:0px;
-border-right-width:0px;
-opacity:.7;
+
+.inputField {
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	opacity: .7;
 }
-.custinput
-{ 
+
+.custinput {
 	display: block;
 	height: 34px;
 	padding: 6px 12px;
@@ -56,63 +57,74 @@ opacity:.7;
 
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
-                    <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand page-scroll" href="#page-top">
-                    <i class="fa fa-play-circle"></i>  <span class="light">EUREKA</span>
-                </a>
-            </div>
+	<!-- Navigation -->
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-main-collapse">
+				<i class="fa fa-bars"></i>
+			</button>
+			<a class="navbar-brand page-scroll" href="<%=basePath%>"> <i
+				class="fa fa-play-circle"></i> <span class="light">EUREKA</span>
+			</a>
+		</div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-                <ul class="nav navbar-nav">
-                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                  <!--   <li>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div
+			class="collapse navbar-collapse navbar-right navbar-main-collapse">
+			<ul class="nav navbar-nav">
+				<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+				<li class="hidden"><a href="#page-top"></a></li>
+				<!--   <li>
                         <a class="page-scroll" href="#myModal" data-toggle="modal">Create</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#resultModal" data-toggle="modal">Result</a>
                     </li> -->
-                    <li>
-                        <a class="page-scroll" href="" target="_blank">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+				<li><a class="page-scroll" href="" target="_blank">Contact</a>
+				</li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container --> </nav>
 
-    <!-- Header -->
-    <div class="intro-header">
+	<!-- Header -->
+	<div class="intro-header">
 
-        <div class="container">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-message">
-                        <h1>EUREKA</h1>
-                        <!-- <h3>....</h3> -->
-                        <hr class="intro-divider">
-                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="intro-message">
+						<h1>EUREKA</h1>
+						<!--  <h3>An extensible hypothesis testing framework</h3>  -->
+						<hr class="intro-divider">
+						<!-- old version -->
+						<!-- <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3">
                         <div class="input-group input-group-lg">
         				<input type="text" placeholder="Search" class="form-control inputField" id="sentence">
         				<span class="input-group-btn">
         				<button id="gobtn" type="button" class="btn btn-primary">Go</button>
         				<button id="gobtn" type="button" class="btn btn-success">Example</button>
         				</span>
-        				
     					</div>
-     					</div>
-                        <!-- <ul class="list-inline intro-social-buttons">
+     					</div> -->
+						<ul class="list-inline intro-social-buttons">
+							<li><a href="#" class="btn btn-default btn-lg"
+								data-toggle="modal" data-target="#loginModal"><i
+									class="fa fa-search fa-fw"></i> <span class="network-name">Join
+										our Journey</span></a></li>
+							<%--  <li>
+                                <a href="<%=basePath%>ohdsi/tasks" class="btn btn-default btn-lg"><i class="fa fa-align-left fa-fw"></i> <span class="network-name">Data Owner</span></a>
+							</li>  --%>
+							<li><a href="" class="btn btn-default btn-lg"
+								target="_blank"><i class="fa fa-question-circle fa-fw"></i>
+									<span class="network-name">Instruction</span></a></li>
+
+						</ul>
+						<!-- <ul class="list-inline intro-social-buttons">
                             <li>
                                 <a href="#" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal"><i class="fa fa-align-left fa-fw"></i> <span class="network-name">开始统计</span></a>
 							</li>
@@ -123,158 +135,216 @@ opacity:.7;
                                 <a href=""><i class="fa fa-question-circle fa-fw"></i> <span class="network-name">使用说明</span></a>
                             </li>
                         </ul> -->
-                    </div>
-			
-                </div>
+					</div>
 
-            </div>
+				</div>
 
-        </div>
-        <!-- /.container -->
+			</div>
 
-    </div>
-    <!-- /.intro-header -->
+		</div>
+		<!-- /.container -->
 
-    <!-- Page Content -->
+	</div>
+	<!-- /.intro-header -->
+
+	<!-- Page Content -->
 
 
-    <div class="content-section-a">
+	<div class="content-section-a">
 
-        <div class="container">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Concept Standardization</h2>
-                    <p class="lead">The concept standardization module takes users’ questions as input (e.g., “Will PTSD increase the risks of Hypothyroidism?”), and recognizes standardized OMOP CDM v5 concepts (e.g., PTSD, Hypothyroidism). This module employs natural language processing techniques to parse users’ free-text questions. </p>
-                </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="" alt="">
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-lg-5 col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">Concept Standardization</h2>
+					<p class="lead">The concept standardization module takes users’
+						questions as input (e.g., “Will PTSD increase the risks of
+						Hypothyroidism?”), and recognizes standardized OMOP CDM v5
+						concepts (e.g., PTSD, Hypothyroidism). This module employs natural
+						language processing techniques to parse users’ free-text
+						questions.</p>
+				</div>
+				<div class="col-lg-5 col-lg-offset-2 col-sm-6">
+					<img class="img-responsive" src="" alt="">
+				</div>
+			</div>
 
-        </div>
-        <!-- /.container -->
+		</div>
+		<!-- /.container -->
 
-    </div>
-    <!-- /.content-section-a -->
+	</div>
+	<!-- /.content-section-a -->
 
-    <div class="content-section-b">
+	<div class="content-section-b">
 
-        <div class="container">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Query Formulation</h2>
-                    <p class="lead">The query formulation module provides users with pre-designed templates based on the OHDSI ATLAS tool to capture the relations between concepts in the free text questions and generate executable database queries (e.g., SQL queries). </p>
-                </div>
-                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="" alt="">
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">Query Formulation</h2>
+					<p class="lead">The query formulation module provides users
+						with pre-designed templates based on the OHDSI ATLAS tool to
+						capture the relations between concepts in the free text questions
+						and generate executable database queries (e.g., SQL queries).</p>
+				</div>
+				<div class="col-lg-5 col-sm-pull-6  col-sm-6">
+					<img class="img-responsive" src="" alt="">
+				</div>
+			</div>
 
-        </div>
-        <!-- /.container -->
+		</div>
+		<!-- /.container -->
 
-    </div>
-    <!-- /.content-section-b -->
+	</div>
+	<!-- /.content-section-b -->
 
-    <div class="content-section-a">
+	<div class="content-section-a">
 
-        <div class="container">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Scientific Workflow Support</h2>
-                    <p class="lead">The scientific workflow support module helps users connect with OHDSI data contributors that are interested in the questions, obtain permissions, and deliver the SQL queries and data analysis scripts to the contributors..</p>
-                </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="" alt="">
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-lg-5 col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">Scientific Workflow Support</h2>
+					<p class="lead">The scientific workflow support module helps
+						users connect with OHDSI data contributors that are interested in
+						the questions, obtain permissions, and deliver the SQL queries and
+						data analysis scripts to the contributors..</p>
+				</div>
+				<div class="col-lg-5 col-lg-offset-2 col-sm-6">
+					<img class="img-responsive" src="" alt="">
+				</div>
+			</div>
 
-        </div>
-        <!-- /.container -->
+		</div>
+		<!-- /.container -->
 
-    </div>
-    <!-- /.content-section-a -->
+	</div>
+	<!-- /.content-section-a -->
 
-    <div class="content-section-b">
+	<div class="content-section-b">
 
-        <div class="container">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Patient Retrieval</h2>
-                    <p class="lead">Each participating contributor identifies qualified patients from an OHDSI dataset and generates case and control groups and their results.</p>
-                </div>
-                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="" alt="">
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">Patient Retrieval</h2>
+					<p class="lead">Each participating contributor identifies
+						qualified patients from an OHDSI dataset and generates case and
+						control groups and their results.</p>
+				</div>
+				<div class="col-lg-5 col-sm-pull-6  col-sm-6">
+					<img class="img-responsive" src="" alt="">
+				</div>
+			</div>
 
-        </div>
-        <!-- /.container -->
+		</div>
+		<!-- /.container -->
 
-    </div>
-    <!-- /.content-section-b -->
-    <div class="content-section-a">
+	</div>
+	<!-- /.content-section-b -->
+	<div class="content-section-a">
 
-        <div class="container">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Evidence Aggregation.</h2>
-                    <p class="lead">Finally, the participating contributors will execute the same analysis scripts and return the results to users through the analysis and aggregation module.  </p>
-                </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="" alt="">
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-lg-5 col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">Evidence Aggregation.</h2>
+					<p class="lead">Finally, the participating contributors will
+						execute the same analysis scripts and return the results to users
+						through the analysis and aggregation module.</p>
+				</div>
+				<div class="col-lg-5 col-lg-offset-2 col-sm-6">
+					<img class="img-responsive" src="" alt="">
+				</div>
+			</div>
 
-        </div>
-        <!-- /.container -->
+		</div>
+		<!-- /.container -->
 
-    </div>
-    <!-- /.content-section-a -->
-    <div class="banner">
+	</div>
+	<!-- /.content-section-a -->
+	<div class="banner">
 
-        <div class="container">
+		<div class="container">
 
-            <div class="row">
-                <div class="col-lg-8">
-                    <h2>Happy to test your hypothesis!</h2>
-                </div>
-                <div class="col-lg-4">
-                    <ul class="list-inline banner-social-buttons">
-                        <li>
-                                <a href="#" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal"><i class="fa fa-align-left fa-fw"></i> <span class="network-name">Let's test</span></a>
-                        </li>
-                           <!--  <li>
+			<div class="row">
+				<div class="col-lg-8">
+					<h2>Happy to test your hypothesis!</h2>
+				</div>
+				<div class="col-lg-4">
+					<ul class="list-inline banner-social-buttons">
+						<li><a href="#" class="btn btn-default btn-lg"
+							data-toggle="modal" data-target="#myModal"><i
+								class="fa fa-align-left fa-fw"></i> <span class="network-name">Let's
+									test</span></a></li>
+						<!--  <li>
                                 <a href="#" class="btn btn-default btn-lg" data-toggle="modal" data-target="#resultModal"><i class="fa fa-search fa-fw"></i> <span class="network-name">结果查询</span></a>
                             </li>
                             -->
-                    </ul>
-                </div>
-            </div>
+					</ul>
+				</div>
+			</div>
 
-        </div>
-        <!-- /.container -->
-    </div>
-     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!--<ul class="list-inline">
+		</div>
+		<!-- /.container -->
+
+		<!--  -->
+		<!--model--->
+		<!-- Modal -->
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel" style="color:black">Login</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" name="form1" id="myForm" class="form-horizontal"
+							action="" method="post">
+							<div class="form-group">
+								<label for="IDCard" class="col-sm-3 control-label" style="color:black">Username</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control col-sm-6" id="username"
+										name="username" placeholder="" value=''>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="IDCard" class="col-sm-3 control-label" style="color:black">Password</label>
+								<div class="col-sm-8">
+									<input type="password" class="form-control col-sm-6" id="password"
+										name="password" placeholder="" value=''>
+								</div>
+							</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button id="login" type="button" class="btn btn-primary">Login</button>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--modal end-->
+		<!--  -->
+	</div>
+	<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<!--<ul class="list-inline">
                         <li>
                             <a href="#home">Home</a>
                         </li>
@@ -291,25 +361,53 @@ opacity:.7;
                             <a href="#contact">Contact</a>
                         </li>
                     </ul>-->
-					
-                    <p class="copyright text-muted small"> This project developed by Chi Yuan, Wei Wei and Chunhua Weng </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <script src="<%=basePath%>js/jquery-1.11.3.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="<%=basePath%>js/bootstrap.min.js"></script>
-<!-- Custom Theme JavaScript -->
-    <script src="<%=basePath%>js/grayscale.js"></script>
-    <script type="text/javascript">
+				<p>This project developed by Chi Yuan, Wei Wei and Chunhua Weng
+				</p>
+				<p>Photo by Teddy Kelley on Unsplash</p>
+			</div>
+		</div>
+	</div>
+	</footer>
+	<script src="<%=basePath%>js/jquery-1.11.3.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="<%=basePath%>js/bootstrap.min.js"></script>
+	<!-- Custom Theme JavaScript -->
+	<script src="<%=basePath%>js/grayscale.js"></script>
+	<script type="text/javascript">
     var basePath = "<%=basePath%>";
     $(function() {
   	  $("#gobtn").click(function() {
   		goButton();
   		});
+  	$("#login").click(function() {
+  		login();
+  		});
     })
+    function login(){
+    	//alert(basePath + "ohdsi/loginverify");
+    	var username=$("#username").val();
+    	var pwd=$("#password").val();
+    	/* alert('hello!'+username+':'+pwd); */
+    	$.ajax({
+			type : 'POST',
+			url : basePath + "ohdsi/loginverify",
+			data : {
+				'username' : username,
+				'pwd':pwd
+			},
+			dataType : "json",
+			success : function(data) {
+				window.location.href=basePath + "ohdsi/account";
+			},
+			error : function() {
+				alert("Username or password is incorrect!");
+			}
+
+		});
+    }
+    
     function goButton(){
     	var sentence = $("#sentence").val();
 		$.ajax({
@@ -321,13 +419,14 @@ opacity:.7;
 			dataType : "json",
 			success : function(data) {
 				alert("Success!"); 
+				window.location.href=basePath + "ohdsi/cohort";
 			},
 			error : function() {
-				//alert("Please check your NCTID");
+				alert("error message!");
 			}
 
 		});
-    	window.location.href=basePath + "ohdsi/cohort";
+    	
     }
     
     </script>

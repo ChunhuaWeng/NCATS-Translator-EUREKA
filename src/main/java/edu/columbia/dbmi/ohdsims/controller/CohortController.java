@@ -20,12 +20,9 @@ public class CohortController {
 		String conceptid1="";
 		String conceptid2="";
 		int relation=0;
-		
 		//CohortCreation.generateSQL(conceptid1, conceptid2, 1);
-		
 		return null;
 	}
-	
 	
 	
 }

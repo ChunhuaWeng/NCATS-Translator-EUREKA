@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.simple.parser.ParseException;
 
 /* Sample questions
  * what percent of type 1 diabetes mellitus patients use insulin after 7 days of diagnosis?
@@ -17,7 +16,7 @@ import org.json.simple.parser.ParseException;
 public class Main {
 
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException {
         Question question = new Question();
 //        question.getQuestion();
 //        question.setQuestion("what percent of type 1 diabetes mellitus patients use insulin after 7 days of diagnosis?");
@@ -29,10 +28,13 @@ public class Main {
 
         question.getTemplates();
         question.analyzeQuestion();
-    		question.formatResult();
+    	question.formatResult();
 //    		
     		// display term objects
     		System.out.println("Analysis method: "+question.analysisMethodName+"\n");
+    		if(question.analysisMethodName.equals("ratio")){
+    			
+    		}
     		if (!question.numTermList.isEmpty()) {
         		System.out.print("numerator\n");
         		for (Term item:question.numTermList) {

@@ -32,7 +32,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-
+import edu.columbia.dbmi.ohdsims.pojo.Concept;
+import edu.columbia.dbmi.ohdsims.pojo.ConceptSet;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
@@ -131,7 +132,87 @@ public class ATLASUtil {
     	return jot;
 	}
 
+	public static LinkedHashMap<ConceptSet, Integer> matchConceptSetByEntity(String entityname) {
+		HashMap<ConceptSet, Integer> candidatecs = new HashMap<ConceptSet, Integer>();
+		// arrange by length similarity
+		int distance = 0;
+		List<ConceptSet> cslist = getallConceptSet();
+		for (int k = 0; k < cslist.size(); k++) {
+			if (cslist.get(k).getName().toLowerCase().contains(entityname.toLowerCase().trim())) {
+				System.out.println("match=" + cslist.get(k).getName());
+				distance = cslist.get(k).getName().length() - entityname.trim().length();
+				candidatecs.put(cslist.get(k), distance);
+			}
+
+		}
+		List<Map.Entry<ConceptSet, Integer>> sort = new ArrayList<>();
+		sort.addAll(candidatecs.entrySet());
+		ValueComparator vc = new ValueComparator();
+		Collections.sort(sort, vc);
+		LinkedHashMap<ConceptSet, Integer> lm = new LinkedHashMap<ConceptSet, Integer>();
+		for (int i = sort.size() - 1; i >= 0; i--) {
+			lm.put(sort.get(i).getKey(), sort.get(i).getValue());
+		}
+		return lm;
+
+	}
 	
+	public static Integer getSimilarConceptSetByEntity(String entityname) {
+		HashMap<ConceptSet, Integer> candidatecs = new HashMap<ConceptSet, Integer>();
+		// arrange by length similarity
+		int distance = 0;
+		List<ConceptSet> cslist = getallConceptSet();
+		for (int k = 0; k < cslist.size(); k++) {
+			if (cslist.get(k).getName().toLowerCase().contains(entityname.toLowerCase().trim())) {
+				System.out.println("match=" + cslist.get(k).getName());
+				distance = cslist.get(k).getName().length() - entityname.trim().length();
+				candidatecs.put(cslist.get(k), distance);
+			}
+		}
+		List<Map.Entry<ConceptSet, Integer>> sort = new ArrayList<>();
+		sort.addAll(candidatecs.entrySet());
+		ValueComparator vc = new ValueComparator();
+		Collections.sort(sort, vc);
+		LinkedHashMap<ConceptSet, Integer> lm = new LinkedHashMap<ConceptSet, Integer>();
+		for (int i = sort.size() - 1; i >= 0; i--) {
+			lm.put(sort.get(i).getKey(), sort.get(i).getValue());
+		}
+		
+		if(sort.size()>0){
+			return sort.get(sort.size() - 1).getKey().getId();
+		}else{
+			return 0;
+		}
+	}
+	
+	public static List<ConceptSet> getallConceptSet() {
+		String strResult = HttpUtil.doGet(conceptseturl);
+		JSONArray array = JSONArray.fromObject(strResult);
+		// System.out.println("-->"+array);
+		List<ConceptSet> list = JSONArray.toList(array, ConceptSet.class);// 过时方法
+		return list;
+	}
+	
+	public static List<Concept> searchConceptByNameAndDomain(String entity, String domainid)
+			throws UnsupportedEncodingException, IOException, ClientProtocolException {
+		JSONObject queryjson = new JSONObject();
+		queryjson.accumulate("QUERY", entity);
+		queryjson.accumulate("DOMAIN_ID", "['" + domainid + "']");
+		queryjson.accumulate("STANDARD_CONCEPT","S");//only standard concept
+//		queryjson.accumulate("VOCABULARY_ID", "['SNOMED']");
+		System.out.println("queryjson:" + queryjson);
+		String vocabularyresult = getConcept(queryjson);
+		System.out.println("vocabularyresult  length=" + vocabularyresult.length());
+		Gson gson = new Gson();
+		JsonArray ja = new JsonParser().parse(vocabularyresult).getAsJsonArray();
+		if (ja.size() == 0) {
+			System.out.println("size=" + ja.size());
+			return null;
+		}
+		List<Concept> list = gson.fromJson(ja, new TypeToken<List<Concept>>() {
+		}.getType());
+		return list;
+	}
 	
 	
 	

@@ -16,6 +16,16 @@ public class SQLUtil {
 		
 	}
 	
+	public static String cleanSQL(String possql){
+		String sql=possql.replace("@cdm_database_schema", "omopcdm");
+        sql=sql.replace("@target_database_schema", "omopcdm");
+        sql=sql.replace("@target_cohort_table", "cohort");
+        sql=sql.replace("@target_cohort_id", "1");
+        int x=sql.indexOf("DELETE FROM");
+        System.out.println("--->"+x);
+        sql=sql.substring(0, x);
+        return sql;
+	}
 	public static Integer executeSQL(String possql){
 		Connection connection=null;
         Statement statement =null;
@@ -25,7 +35,6 @@ public class SQLUtil {
             Class.forName("org.postgresql.Driver");
             connection= DriverManager.getConnection(url, user, password);
             //System.out.println("是否成功连接pg数据库"+connection);
-            
             
             String sql=possql.replace("@cdm_database_schema", "public");
             sql=sql.replace("@target_database_schema", "public");

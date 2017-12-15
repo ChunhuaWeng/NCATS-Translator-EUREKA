@@ -12,7 +12,7 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
 
-import edu.columbia.dbmi.ohdsims.model.Criterion;
+import edu.columbia.dbmi.ohdsims.pojo.Criterion;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 

@@ -21,6 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- Custom CSS -->
 <link href="<%=basePath%>css/landing-page.css" rel="stylesheet">
 <link href="<%=basePath%>css/grayscale.css" rel="stylesheet">
+<link href="<%=basePath%>css/bootstrap-table.min.css" rel="stylesheet">
 <!-- Custom Fonts -->
 <link href="<%=basePath%>css/font-awesome.min.css" rel="stylesheet"
 	type="text/css">
@@ -88,10 +89,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 </style>
 
-
 </head>
 <body>
-
 	<nav class="navbaryc navbar-customyc navbar-fixed-top top-nav-collapseyc"
 		role="navigation">
 	<div class="container">
@@ -100,7 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				data-target=".navbar-main-collapse">
 				<i class="fa fa-bars"></i>
 			</button>
-			<a class="navbar-brand page-scroll" href="#page-top"> <i
+			 <a class="navbar-brand page-scroll" href="<%=basePath%>"> <i
 				class="fa fa-play-circle"></i> <span class="light">EUREKA</span>
 			</a>
 		</div>
@@ -121,23 +120,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</li>
 			</ul>
 		</div>
-		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container --> </nav>
-	<div class="container projects">
-		<div class="page-header projects-header " style="margin-top: 100px">
-			<h4>Choose Sites</h4>
+  <!-- Default panel contents -->
+	</div>
+	<div class="container projects" style="margin-top: 50px">
+		<div class="page-header projects-header ">
+			<h4>Send data request</h4>	
 		</div>
 		<div class="panel panel-default">
   <!-- Default panel contents -->
-  
-
-  <table class="table">
+  <table id="table"></table>
+<%-- <table id="table1" class="table" data-toggle="table" data-url="<%=basePath%>ohdsi/getallsites">  
+ <thead>
+          <tr>
+            <th>#</th>
+            <th data-field="id">Site Name</th>
+            <th data-field="id">Description</th>
+            <th data-field="id">Status</th>
+            <th data-field="id">Patient Count</th>
+            <th data-field="id">Assign</th>
+          </tr>
+        </thead>
+</table>  --%> 
+  <!-- <table class="table">
         <thead>
           <tr>
             <th>#</th>
             <th>Site Name</th>
             <th>Description</th>
+            <th>Status</th>
             <th>Patient Count</th>
             <th>Assign</th>
           </tr>
@@ -147,40 +159,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <th scope="row">1</th>
             <td>SynPuf 1%</td>
             <td>CMS 2008-2010 Data Entrepreneurs’ Synthetic Public Use File</td>
-            <td>23,000</td>
+            <td class="text-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Supported</td>
+             <td>23,000</td>
             <td><input type="checkbox"></td>
           </tr>
           <tr>
            <th scope="row">2</th>
             <td>SynPuf 1k</td>
             <td>CMS 2008-2010 Data Entrepreneurs’ Synthetic Public Use File</td>
+            <td class="text-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Supported</td>
             <td>1,000</td>
             <td><input type="checkbox"></td>
           </tr>
            <tr>
-           <th scope="row">2</th>
+           <th scope="row">3</th>
             <td>OHDSI West Pending</td>
             <td>NYP & Columbia University Medical Center</td>
+            <td class="text-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Supported</td>
             <td>200,0000</td>
             <td><input type="checkbox"></td>
           </tr>
-           <th scope="row">2</th>
+           <th scope="row">4</th>
             <td>OHDSI East Pending</td>
             <td>Cornell Medical Center</td>
+            <td class="text-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Not supported</td>
             <td>200,0000</td>
             <td><input type="checkbox"></td>
           </tr>
           
         </tbody>
-      </table>
+      </table> -->
 </div>
 		
 	</div>
 	
 	
 	<div class="container projects">
-		
-		 <button id="execute" type="button" class="btn btn-default">Execute Test</button>
+		 <button id="execute" type="button" class="btn btn-default">Initiate Request</button>
 		</div>
 	<footer>
 	<div class="container">
@@ -203,7 +218,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <a href="#contact">Contact</a>
                         </li>
                     </ul>-->
-
 				<p class="copyright text-muted small">This project developed by
 					Chi Yuan, Wei Wei and Chunhua Weng</p>
 			</div>
@@ -214,17 +228,62 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="<%=basePath%>js/bootstrap.min.js"></script>
+	<script src="<%=basePath%>js/bootstrap-table.min.js"></script>
 	<!-- Custom Theme JavaScript -->
 	
 	<script type="text/javascript">
     var basePath = "<%=basePath%>";
     $(function() {
-  	  $("#execute").click(function() {
-  		goButton();
+    	$('#table').bootstrapTable({
+    		url: basePath + "ohdsi/getallsites",
+    		responseHandler:function (res) {
+                return res.rows;
+            },
+    		columns: [{
+    	        field: 'id',
+    	        title: 'id'
+    	    }, {
+    	        field: 'siteName',
+    	        title: 'Site Name'
+    	    },{
+    	        field: 'desc',
+    	        title: 'Description'
+    	    }, {
+    	        field: 'patientCount',
+    	        title: 'Patient Count'
+    	    }, {
+    	        field: 'status',
+    	        title: 'Status',
+    	        formatter: processStatus
+    	        
+    	    }, {
+    	        field: '',
+    	        title: 'Operation',
+    	        formatter:assignFormat	       
+    	    }],
+    	});
+    	
+  	    $("#execute").click(function() {
+  		     goButton();
   		});
+  	   
+  
     })
+    
+    function processStatus(value, row, index) {
+    	if(value==1){
+    		return "<span class=\"glyphicon glyphicon-remove text-danger\" aria-hidden=\"true\"></span>"; 	
+    	}else{
+    		return "<span class=\"glyphicon text-success glyphicon-ok\" aria-hidden=\"true\"></span>";
+    	}
+      }
+    function assignFormat(value, row, index) {
+    		return "<input type=\"checkbox\">";
+    	
+      }
     function goButton(){
-    	window.location.href=basePath + "ohdsi/results";
+    	//window.location.href=basePath + "ohdsi/results";
+    	alert('Send Successfully!');
     }
     </script>
 </body>

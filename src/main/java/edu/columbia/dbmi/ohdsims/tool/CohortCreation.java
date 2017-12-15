@@ -1,25 +1,27 @@
 package edu.columbia.dbmi.ohdsims.tool;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import edu.columbia.dbmi.ohdsims.model.Criterion;
+import org.apache.http.client.ClientProtocolException;
+
+import edu.columbia.dbmi.ohdsims.pojo.Concept;
+import edu.columbia.dbmi.ohdsims.pojo.ConceptRecordCount;
+import edu.columbia.dbmi.ohdsims.pojo.Criterion;
+import edu.columbia.dbmi.ohdsims.pojo.Demographic;
+import edu.columbia.dbmi.ohdsims.pojo.ExtendConcept;
 import edu.columbia.dbmi.ohdsims.util.ATLASUtil;
 import edu.columbia.dbmi.ohdsims.util.HttpUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
-
 
 
 
@@ -40,16 +42,27 @@ public class CohortCreation {
 //		.String[] test1=generateConceptSet(conceptid1,conceptid2,1);
 		//String x=generateConceptSetByOneConcept(201826);
 		//System.out.println("here="+x);
-		String id=createConceptSetByOneConcpetId("type 2 diabetes",201826);
-		System.out.println(id);
-//		HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+id+"/items",x);
-		//String conceptSetId1="923390";
-		
-		//generateCohortSQL(null);
-		//HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+conceptSetId1+"/items",test1[0]);
-		//String conceptSetId2="923390";
-		//HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+conceptSetId1+"/items",test1[0]);
-		//----
+//		String id=createConceptSetByOneConcpetId("type 2 diabetes",201826);
+//		System.out.println(id);
+////		HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+id+"/items",x);
+//		//String conceptSetId1="923390";
+//		
+//		//generateCohortSQL(null);
+//		//HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+conceptSetId1+"/items",test1[0]);
+//		//String conceptSetId2="923390";
+//		//HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+conceptSetId1+"/items",test1[0]);
+//		//----
+//		List<Criterion> criteria =new ArrayList<Criterion>();
+//		Criterion c=new Criterion();
+//		c.setConceptSetId(123123);
+//		c.setConceptSetName("1123");
+//		c.setInitialEvent(true);
+//		c.setDomain("Condition");
+//		criteria.add(c);
+//		//c.setNeg();
+//		generateCohortSQL(criteria, null);
+		Integer id=createConceptByConceptName("alcoholism","Condition");
+		System.out.println("id="+id);
 		
 	}
 	
@@ -62,32 +75,37 @@ public class CohortCreation {
 		System.out.println("====>"+jo);
 		String result=HttpUtil.doPost("http://api.ohdsi.org/WebAPI/conceptset/", jo.toString());
 		JSONObject rejo=JSONObject.fromObject(result);
+		System.out.println(result);
 		HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+rejo.getString("id")+"/items",expression);
 		return rejo.getString("id");
 	}
-	public static String generateCohortSQL(List<Criterion> criteria) throws IOException{
+	
+	public static String[] generateCohortSQL(List<Criterion> criteria,Map<String,Integer> conceptSetMap) throws IOException{
 		JSONArray conceptSetArr=new JSONArray();
 		//JSONArray ja = JSONArray.fromObject(conceptJson);
 		//System.out.println(ATLASUtil.querybyconceptSetid(923390));
-		
-		
+		String[] resultarr=new String[3];
 		//Create conceptSets
+		try {
+		int initindex=-1;
 		for(int i=0;i<criteria.size();i++){
-			Integer conceptSetid=Integer.valueOf(createConceptSetByOneConcpetId(criteria.get(i).getConceptSetName(),criteria.get(i).getConceptSetId()));
+			Integer conceptSetid=conceptSetMap.get(criteria.get(i).getConceptSetName());
 			conceptSetArr.add(ATLASUtil.querybyconceptSetid(conceptSetid));	
 			criteria.get(i).setConceptSetId(conceptSetid);
+			if(criteria.get(i).isInitialEvent()){
+				initindex=i;
+			}
 		}
-
-//		
-//		
-//		List<Criterion> criteria=new ArrayList<Criterion>();
-//		criteria.add(c);
 		
-		//create cohort JSON
+		//Create Cohort JSON
 		
 		JSONObject jcs = new JSONObject();
-		
-		JSONObject initialevent = setAnyConditionforInitialEvent();//Set inital event 
+		JSONObject initialevent =new JSONObject();
+		if(initindex==-1){
+			initialevent = setAnyVisitforInitialEvent();//Set inital event
+		}else{
+			initialevent = setAnyVisitAsInitialEvent(criteria.get(initindex).getDomain(),criteria.get(initindex).getConceptSetId());//Set inital event
+		}
 		JSONObject joaddc = setAdditionalCriteria(criteria);//Set additional criteria
 		JSONObject jofirst = new JSONObject();
 		JSONArray janull = new JSONArray();
@@ -102,7 +120,6 @@ public class CohortCreation {
 		jcs.accumulate("CensoringCriteria", janull);
 		System.out.println(jcs);
 		
-		
 		String results;
 		JSONObject resultjson;
 		//JSON to SQL
@@ -110,14 +127,15 @@ public class CohortCreation {
 //		//insert to ATLAS
 		long t1=System.currentTimeMillis();  
 		HashMap<String,String> map=new HashMap<String,String>();
-		String cohortname="eureka"+t1;
+		String cohortname="criteria2query"+t1;
 		map.put("name", cohortname);
 		map.put("expressionType", "SIMPLE_EXPRESSION");
 		map.put("expression",jcs.toString());
 		results=HttpUtil.doPost("http://api.ohdsi.org/WebAPI/cohortdefinition/", JSONObject.fromObject(map).toString());
 		resultjson=JSONObject.fromObject(results);
 		System.out.println("cohortId="+resultjson.get("id"));
-		
+		Integer r1=(Integer) resultjson.get("id");
+		resultarr[0]=r1.toString();
 		//http://api.ohdsi.org/WebAPI/cohortdefinition/sql
 		
 		//generate SQL template
@@ -125,23 +143,32 @@ public class CohortCreation {
 		jo.accumulate("expression", jcs.toString());
 		//System.out.println("jo="+jo);
 		results=HttpUtil.doPost("http://api.ohdsi.org/WebAPI/cohortdefinition/sql", jo.toString());
-		//System.out.println("sql="+results);
+		System.out.println("!!!!!!!=");
+		System.out.println(jo.toString());
 		resultjson=JSONObject.fromObject(results);
-		//System.out.println("SQL template="+resultjson.get("templateSql"));
+		System.out.println("SQL template="+resultjson.get("templateSql"));
+		resultarr[2]=(String) resultjson.get("templateSql");
 		
-		//SQL template -> different SQLs
+//		//SQL template -> different SQLs
 		JSONObject sqljson=new JSONObject();
 		sqljson.accumulate("SQL", resultjson.get("templateSql"));
 		sqljson.accumulate("targetdialect", "postgresql");
 		//System.out.println("sqljson="+sqljson.toString());
 		results=HttpUtil.doPost("http://api.ohdsi.org/WebAPI/sqlrender/translate", sqljson.toString());
-		System.out.println("postgresql sql="+results);
+		//System.out.println("postgresql sql="+results);
 		resultjson=JSONObject.fromObject(results);
-		System.out.println(resultjson.get("targetSQL"));
-		//JSON 
-		
+		//System.out.println(resultjson.get("targetSQL"));
+//JSON 
+//		String sqlresult=(String) resultjson.get("targetSQL");
 		String sqlresult=(String) resultjson.get("targetSQL");
-		return sqlresult;
+		resultarr[1]=sqlresult;
+		return resultarr;
+		} 
+		catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public static String[] generateConceptSet(Set<Integer> conceptid1,Set<Integer> conceptid2,int type){
@@ -171,7 +198,19 @@ public class CohortCreation {
 		JSONArray conceptSet=new JSONArray();
 		JSONObject jo=formatOneitem(conceptId);
 		conceptSet.add(jo);		
-		System.out.println("conceptSet="+conceptSet.toString());	
+		//System.out.println("conceptSet="+conceptSet.toString());	
+		return conceptSet.toString();
+	}
+	
+	public static String generateConceptSetByConcepts(List<Concept> concepts){
+		//type 1 concept 1  VS. concept 1 and concept 2
+		//[{"conceptId":201826,"isExcluded":0,"includeDescendants":1,"includeMapped":1},{"conceptId":316866,"isExcluded":0,"includeDescendants":1,"includeMapped":1}]
+		JSONArray conceptSet=new JSONArray();
+		for(Concept c:concepts){
+			JSONObject jo=formatOneitem(c.getCONCEPT_ID());
+			conceptSet.add(jo);		
+		}
+		//System.out.println("conceptSet="+conceptSet.toString());	
 		return conceptSet.toString();
 	}
 	
@@ -197,18 +236,43 @@ public class CohortCreation {
 		JSONArray jarr=new JSONArray();
 		for (int x = 0; x < criteria.size(); x++) {
 			if(criteria.get(x).isInitialEvent()==false){
-				jarr.add(setCriteriaUnit(criteria.get(x).getConceptSetId(),criteria.get(x).isNeg(),criteria.get(x).isInclusionCriterion(),criteria.get(x).getDomain(),1));
+				Criterion cunit=criteria.get(x);
+				System.out.println(cunit.getAfterDays());
+				System.out.println(cunit.isNeg());
+				System.out.println(cunit.getAfterDays());
+				System.out.println(cunit.getConceptSetId());
+				System.out.println(cunit.isInclusionCriterion());
+				System.out.println(cunit.getDomain());
+				System.out.println(cunit.getBeforeDays());
+				System.out.println(cunit.getAfterDays());
+				System.out.println(cunit.getTemporaltype());
+				JSONObject jotmp=setCriteriaUnit(cunit.getConceptSetId(),cunit.isNeg(),cunit.isInclusionCriterion(),cunit.getDomain(),cunit.getBeforeDays(),cunit.getAfterDays(),cunit.getTemporaltype());
+				jarr.add(jotmp);
 				conceptsetindex++;
 			}
 		}
 		additionalcriteria.accumulate("Type", "ALL");
 		additionalcriteria.accumulate("CriteriaList", jarr);
 		JSONArray janull=new JSONArray();
+		
 		additionalcriteria.accumulate("DemographicCriteriaList", janull);
+		
 		additionalcriteria.accumulate("Groups", janull);
 		return additionalcriteria;
 	}
 	
+	public static JSONArray translateDemographic(Demographic demographic){
+		JSONArray ja=new JSONArray();
+		//age
+		JSONObject agejo = new JSONObject();
+		JSONObject agecontent=new JSONObject();
+		agecontent.accumulate("Value", demographic.getAge_low());
+		agecontent.accumulate("Extent", demographic.getAge_high());
+		agecontent.accumulate("Op", demographic.getAge_relation());
+		agejo.accumulate("Age", agecontent);
+		ja.add(agejo);
+		return ja;
+	}
 	
 	/**
 	 * inclusion :flag = true ; exclusion : flag=false;
@@ -217,18 +281,23 @@ public class CohortCreation {
 	 * 
 	 * */
 	
-	public static JSONObject setCriteriaUnit(int index,boolean neg,boolean flag,String type,int temporal){
+	public static JSONObject setCriteriaUnit(int index,boolean neg,boolean flag,String type,int beforedays,int afterdays,int temporaltype){
+		System.out.println("123123123123123");
 		JSONObject criteriaunit = new JSONObject();
 		JSONObject occurrence = new JSONObject();
 		JSONObject startwindow = new JSONObject();
 		JSONObject criteria = new JSONObject();
 		criteria = setCriteria(type, index);
+		System.out.println("neg="+neg);
+		System.out.println("inclu="+flag);
 		if (neg^flag == true) {
+			System.out.println("in=======");
 			occurrence = setOccurrence(2, 1);	
 		}else {
+			System.out.println("ex======");
 			occurrence = setOccurrence(0, 0);
 		}
-		startwindow = setTemporalWindow(temporal);
+		startwindow = setTemporalWindow(beforedays,afterdays,temporaltype);
 		criteriaunit.accumulate("Criteria", criteria);
 		criteriaunit.accumulate("StartWindow", startwindow);
 		criteriaunit.accumulate("Occurrence", occurrence);
@@ -247,16 +316,48 @@ public class CohortCreation {
 			criteriatype.accumulate("Observation", codesetId);
 		} else if (type.equals("Procedure_Device")) {
 			criteriatype.accumulate("DeviceExposure", codesetId);
+		}else if (type.equals("Procedure")) {
+			criteriatype.accumulate("ProcedureOccurrence", codesetId);
 		}
 		return criteriatype;
 	}
-	public static JSONObject setAnyConditionforInitialEvent(){
+	public static JSONObject setAnyVisitforInitialEvent(){
 		JSONObject anycondition=new JSONObject();
 		JSONArray criteriaList=new JSONArray();
 		JSONObject conditionOccurrence=new JSONObject();
 		JSONObject jnull=new JSONObject();
-		conditionOccurrence.accumulate("ConditionOccurrence", jnull);
+		conditionOccurrence.accumulate("VisitOccurrence", jnull);
 		criteriaList.add(conditionOccurrence);
+		anycondition.accumulate("CriteriaList", criteriaList);
+		JSONObject observationWindow=new JSONObject();
+		observationWindow.accumulate("PriorDays", 0);
+		observationWindow.accumulate("PostDays", 0);
+		anycondition.accumulate("ObservationWindow", observationWindow);
+		JSONObject primaryCriteriaLimit=new JSONObject();
+		primaryCriteriaLimit.accumulate("Type", "First");
+		anycondition.accumulate("PrimaryCriteriaLimit", primaryCriteriaLimit);
+		return anycondition;
+	}
+	
+	public static JSONObject setAnyVisitAsInitialEvent(String type,Integer conceptId){
+		JSONObject anycondition=new JSONObject();
+		JSONArray criteriaList=new JSONArray();
+//		JSONObject conditionOccurrence=new JSONObject();
+//		JSONObject jnull=new JSONObject();
+//		conditionOccurrence.accumulate("ConditionOccurrence", jnull);
+		JSONObject criteriatype = new JSONObject();
+		JSONObject codesetId = new JSONObject();
+		codesetId.accumulate("CodesetId", conceptId);
+		if (type.equals("Condition")) {
+			criteriatype.accumulate("VisitOccurrence", codesetId);
+		} else if (type.equals("Drug")) {
+			criteriatype.accumulate("DrugExposure", codesetId);
+		} else if (type.equals("Observation")) {
+			criteriatype.accumulate("Observation", codesetId);
+		} else if (type.equals("Procedure_Device")) {
+			criteriatype.accumulate("DeviceExposure", codesetId);
+		}
+		criteriaList.add(criteriatype);
 		anycondition.accumulate("CriteriaList", criteriaList);
 		JSONObject observationWindow=new JSONObject();
 		observationWindow.accumulate("PriorDays", 0);
@@ -281,22 +382,54 @@ public class CohortCreation {
 	 * index 1: has history of 
 	 * index 2: has 
 	 * */
-	public static JSONObject setTemporalWindow(int index) {
+	public static JSONObject setTemporalWindow(int beforedays, int afterdays,int index) {
 		JSONObject window = new JSONObject();
 		JSONObject start = new JSONObject();
 		JSONObject end = new JSONObject();
-		if(index ==1){
+		if(index ==2){
+			//after
 			start.accumulate("Coeff", -1);
-			// start.accumulate("Count", 0);
-			end.accumulate("Coeff", "1");
-			// end.accumulate("Count", 0);
-			//end.accumulate("Days", "0");	
+			start.accumulate("Days", 0);	
+			end.accumulate("Coeff", 1);
+			if(afterdays!=-1){
+				end.accumulate("Days", afterdays);
+			}
+		}else if(index==1){
+			//before	
+			start.accumulate("Coeff", 1);
+			if(afterdays!=-1){
+				start.accumulate("Days", afterdays);
+			}
+			end.accumulate("Days", 0);
+			end.accumulate("Coeff", -1);	
 		}
+		System.out.println(start);
 		window.accumulate("Start", start);
 		window.accumulate("End", end);
 		return window;
 	}
-
 	
+	public static Integer createConceptByConceptName(String word,String domain) throws UnsupportedEncodingException, ClientProtocolException, IOException{
+		Integer conceptId=0;
+		//the most related one
+		
+		System.out.println("word=" + word);
+		System.out.println("domain=" + domain);
+		
+		List<Concept> econceptlist = ATLASUtil.searchConceptByNameAndDomain(word, domain);
+		
+		
+		String expression=generateConceptSetByConcepts(econceptlist);
+		long t1=System.currentTimeMillis();  
+		JSONObject jo=new JSONObject();
+		jo.accumulate("name", word+"_auto_"+t1);
+		jo.accumulate("id", 23333);
+		System.out.println("====>"+jo);
+		String result=HttpUtil.doPost("http://api.ohdsi.org/WebAPI/conceptset/", jo.toString());
+		JSONObject rejo=JSONObject.fromObject(result);
+		System.out.println(result);
+		HttpUtil.doPut("http://api.ohdsi.org/WebAPI/conceptset/"+rejo.getString("id")+"/items",expression);		
+		return Integer.valueOf(rejo.getString("id"));
+	}
 
 }
